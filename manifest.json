@@ -27,11 +27,15 @@
 	"content_scripts": [ {
 		"all_frames": false,
 		"js": [ "ctre_content.js" ],
-		"matches": [ "http://*/*", "https://*/*" ],
+		"matches": [ 
+			"http://*/*", 
+			"https://*/*" ],
 		"run_at": "document_end"
 	} ],
 	"permissions": [
-		"tabs", "http://*/*", "https://*/*"
+		"tabs", 
+		"http://*/*", 
+		"https://*/*"
 	],
 	"incognito": "spanning"
 }
