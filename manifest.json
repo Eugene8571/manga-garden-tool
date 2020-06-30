@@ -6,9 +6,9 @@
 	"manifest_version": 2,
 	"description": "Remove annoying elements with a single click",
 	"icons": {
-		"128": "icons/icon_128.png",
-		"48": "icons/icon_48.png",
-		"16": "icons/action_inactive.png"
+		"128": "images/btn_128.png",
+		"48": "images/btn_48.png",
+		"16": "images/btn_16_ohra.png"
 	},
 	"browser_action": {
 		"default_icon": "icons/action_inactive.png",
