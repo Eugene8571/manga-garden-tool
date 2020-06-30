@@ -35,8 +35,6 @@
 	} ],
 	"permissions": [
 		"activeTab" 
-		// "http://*/*", 
-		// "https://*/*"
 	],
 	"incognito": "spanning"
 }
