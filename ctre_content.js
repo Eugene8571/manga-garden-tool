@@ -54,7 +54,7 @@ const ctre = {
 	},
 
 	addHighlightStyle: function (elm) {
-		ctre.markedElement.style.outline = 'solid 5px rgba(255,0,0,0.5)';
+		ctre.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
 		ctre.markedElement.style.outlineOffset = '-5px';
 	},
 
@@ -322,26 +322,35 @@ const ctre = {
 		if (!ctre.helpWindow) return;
 
 		let elmList = document.querySelector('#ctre_elm_list');
-		let lines = [];
+		let line = "";
 
 		if (ctre.hiddenElements.length) {
-			lines.push('<table><tr class="ct_heading"><td>Removed element</td><td>Remember?</td><td></td></tr>');
+			// !!! одиночный вызов строки позиции элемента
+		
+			alert(ctre.getPathHTML(ctre.markedElement));
+			line = ctre.getPathHTML(ctre.markedElement);
 
-			for (let elm of ctre.hiddenElements) {
-				lines.push(`<tr>
-					<td class="ct_selector"><a href="" class="ct_edit_selector">edit</a>${escapeHTML(elm.selector)}</td>
-					<td><input type="checkbox"${elm.permanent ? ' checked' : ''}></td>
-					<td><a href="" class="ct_delete">✖</a>
-				</tr>`);
-			}
+			// lines.push('<table><tr class="ct_heading"><td>Removed element</td><td>Remember?</td><td></td></tr>');
 
-			lines.push('</table>');
+
+
+			// for (let elm of ctre.hiddenElements) {
+			// 	lines.push(`<tr>
+			// 		<td class="ct_selector"><a href="" class="ct_edit_selector">edit</a>${escapeHTML(elm.selector)}</td>
+			// 		<td><input type="checkbox"${elm.permanent ? ' checked' : ''}></td>
+			// 		<td><a href="" class="ct_delete">✖</a>
+			// 	</tr>`);
+			// }
+
+			// lines.push('</table>');
 			elmList.classList.add('hasContent');
+
 		} else {
 			elmList.classList.remove('hasContent');
 		}
 		
-		elmList.innerHTML = lines.join('\n');
+		// elmList.innerHTML = lines.join('\n');
+		elmList.innerHTML = line
 
 		function onChangePermanent () {
 			var tr = closest(this, 'tr');
@@ -633,7 +642,7 @@ function closest(el, selector) {
 
 function escapeHTML(str) {
 	// return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-	alert(ctre.getPathHTML(ctre.markedElement));
+	// alert(ctre.getPathHTML(ctre.markedElement));
 	return;
 }
 
