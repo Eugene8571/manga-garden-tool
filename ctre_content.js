@@ -200,12 +200,31 @@ const ctre = {
 		let cssLines = [
 			`
 			#ctre_wnd {
-				position: fixed; bottom: 0; right: 10px; width: 360px; padding: 10px 20px;
+				display: none;
+				position: absolute;
+				top: 200px;
+				right: 10px;
+				width: 360px;
+				height: 350px; 
+				padding: 10px 20px;
 				box-sizing: content-box;
-				text-align: left; font-family: Helvetica, Arial, sans-serif;
-				background: #fff; box-shadow: 0px 0px 40px rgba(0,0,0,0.15);
-				z-index: ${ctre.maxZIndex};
-				font-size: 12px; color: #666;
+				background: #fff;
+				// display: inline-block;
+				margin: 15px;
+				box-shadow: 
+				0 7px 14px rgba(0,0,0,0.25), 
+				0 5px 5px rgba(0,0,0,0.22);  
+				padding: 10px;
+				margin-top: 15px;
+
+
+
+				// position: fixed; bottom: 0; right: 10px; width: 360px; padding: 10px 20px;
+				// box-sizing: content-box;
+				// text-align: left; font-family: Helvetica, Arial, sans-serif;
+				// background: #fff; box-shadow: 0px 0px 40px rgba(0,0,0,0.15);
+				// z-index: ${ctre.maxZIndex};
+				// font-size: 12px; color: #666;
 			}
 			#ctre_wnd * {
 				line-height: 1.3; font-size: inherit; color: inherit;
@@ -252,13 +271,22 @@ const ctre = {
 			#ctre_wnd .transposeKeys { float: right; }
 			#ctre_current_elm {
 				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
-				max-height: 84px; overflow: hidden;
+				height: 84px; overflow: hidden;
 			}
 			#ctre_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
 			#ctre_current_elm .pathNode.active { border-bottom: solid 2px #555; }
 
-			#ctre_elm_list { display: none; margin: 0 -20px; background: #f7f7f7; border: solid 12px #f7f7f7; border-width: 12px 0 12px 0; max-height: 90px; overflow: auto; }
-			#ctre_elm_list.hasContent { display: block; }
+			#ctre_elm_list { 
+				// display: none; 
+				margin: 0 px; 
+				background: #f7f7f7; 
+				border: solid 12px #f7f7f7; 
+				border-width: 12px 0 12px 0; 
+				height: 90px; 
+				overflow: hidden; 
+			}
+			// #ctre_elm_list.hasContent { display: block; }
+			#ctre_wnd.hasContent { display: inline-block; }
 			#ctre_elm_list table { border: 0; width: 100%; border-spacing: 0; }
 			#ctre_elm_list tr { border: 0; }
 			#ctre_elm_list tr.ct_heading td { color: #bbb; }
@@ -269,7 +297,8 @@ const ctre = {
 			#ctre_elm_list td:nth-child(3) { padding-right: 20px; }
 			#ctre_elm_list tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
 			#ctre_elm_list td input { display: inline; -webkit-appearance: checkbox; }
-			#ctre_elm_list td input:before, #ctre_elm_list td input:after { content: none; }
+			#ctre_elm_list td input:before, 
+			#ctre_elm_list td input:after { content: none; }
 			#ctre_elm_list .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
 			#ctre_elm_list .ct_edit_selector:hover { color: #000; }
 			#ctre_elm_list tr:hover .ct_edit_selector { opacity: 1; }
@@ -322,6 +351,8 @@ const ctre = {
 		if (!ctre.helpWindow) return;
 
 		let elmList = document.querySelector('#ctre_elm_list');
+		let wind = document.querySelector('#ctre_wnd');
+
 		let line = "";
 
 		if (ctre.hiddenElements.length) {
@@ -344,9 +375,11 @@ const ctre = {
 
 			// lines.push('</table>');
 			elmList.classList.add('hasContent');
+			wind.classList.add('hasContent');
 
 		} else {
 			elmList.classList.remove('hasContent');
+			wind.classList.remove('hasContent');
 		}
 		
 		// elmList.innerHTML = lines.join('\n');
@@ -532,7 +565,7 @@ const ctre = {
 		document.addEventListener('mouseup', ctre.preventEvent, true);
 		document.addEventListener('click', ctre.preventEvent, true);
 		
-		ctre.helpWindow.style.display = "block";
+		// ctre.helpWindow.style.display = "block";
 		
 		ctre.addOverlays();
 		
