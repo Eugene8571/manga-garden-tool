@@ -9,7 +9,7 @@ function setActive() {
 }
 
 function setInactive() {
-	chrome.browserAction.setIcon( { path: 'images/btn_48_inactive.png' } );
+	chrome.browserAction.setIcon( { path: 'images/btn_48.png' } );
 	chrome.browserAction.setTitle( { title: 'Click to remove element' });
 }
 
