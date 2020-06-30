@@ -320,11 +320,15 @@ const ctre = {
 			#ctre_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
 
 			#send_selected {
+				background-color: #3498DB;
+				text-align: center;
 				font-size: 21px;
 				width: 100px;
+				height: 41px;
 				margin: 30px;
 				margin-left: 130px;
 				color: #fff;
+				vertical-align: middle;
 			}
 
 			`
