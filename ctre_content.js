@@ -48,6 +48,7 @@ const ctre = {
 		ctre.transpose = i;
 		ctre.addHighlightStyle(ctre.markedElement);
 
+		// alert(ctre.getPathHTML(ctre.hoveredElement, ctre.transpose));
 		document.querySelector('#ctre_current_elm').innerHTML = ctre.getPathHTML(ctre.hoveredElement, ctre.transpose);
 		document.querySelector('#ctre_current_elm').scrollTop = 9999;
 	},
