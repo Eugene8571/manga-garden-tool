@@ -38,7 +38,11 @@ function checkActive() {
 	});
 }
 
-chrome.browserAction.onClicked.addListener(function() {
+
+// chrome.browserAction.onClicked.addListener(function() {
+
+document.getElementById('picker_btn').addEventListener('click', function() {
+
 	chrome.tabs.getSelected(null, function(tab) {
 		chrome.tabs.sendMessage(tab.id, { 'action': 'toggle' }, function(response) {
 			if (chrome.runtime.lastError) {
@@ -47,8 +51,8 @@ chrome.browserAction.onClicked.addListener(function() {
 
 			if (!response) {
 				chrome.tabs.executeScript(tab.id, {
-					// code: "if (confirm('This tab was loaded before CTRE was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
-					code: "location.reload();"
+					code: "if (confirm('This tab was loaded before CTRE was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
+					// code: "location.reload();"
 				});
 			}
 		});
