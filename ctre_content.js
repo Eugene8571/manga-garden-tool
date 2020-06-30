@@ -358,7 +358,7 @@ const ctre = {
 		if (ctre.hiddenElements.length) {
 			// !!! одиночный вызов строки позиции элемента
 		
-			alert(ctre.getPathHTML(ctre.markedElement));
+			// alert(ctre.getPathHTML(ctre.markedElement));
 			line = ctre.getPathHTML(ctre.markedElement);
 
 			// lines.push('<table><tr class="ct_heading"><td>Removed element</td><td>Remember?</td><td></td></tr>');
@@ -480,7 +480,7 @@ const ctre = {
 
 	updateSettings: function() {
 		// эффект не заметен
-		// return;
+		return;
 		document.querySelector('#ctre_opt_remember').textContent = ctre.settings.remember ? 'yes' : 'no';
 	},
 
@@ -514,19 +514,12 @@ const ctre = {
 			<div class="ct_close">✖</div>
 			<div id="ctre_current_elm">Select an element with the mouse</div>
 			<div class="keys">
-				<div class="activationKeys">
-					<span class="key">Ctrl</span><span class="key">Shift</span><span class="key">X</span>: toggle CTRE
-				</div>
 				<div class="transposeKeys">
 					<span class="key">Q</span>/<span class="key">W</span>: move up or down one level
 				</div>
 			</div>
-			<div class="ct_settings">
-				Remember by default: <a href="" id="ctre_opt_remember">?</a>
-			</div>
 			<div class="ct_separator"></div>
 			<div id="ctre_elm_list"></div>
-			<div class="ct_more">Made by <a href="https://blade.sk/?utm_source=ctre" target="_blank" rel="nofollow">blade.sk</a>. Check out my other projects: <a href="https://keyboard.cool/?utm_source=ctre" target="_blank" rel="nofollow">keyboard.cool</a></div>
 		`;
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
@@ -539,12 +532,12 @@ const ctre = {
 			e.preventDefault();
 		});
 
-		div.querySelector('#ctre_opt_remember').addEventListener('click', function (e) {
-			ctre.settings.remember = this.textContent == 'no';
-			ctre.saveSettings();
-			ctre.updateSettings();
-			e.preventDefault();
-		});
+		// div.querySelector('#ctre_opt_remember').addEventListener('click', function (e) {
+		// 	ctre.settings.remember = this.textContent == 'no';
+		// 	ctre.saveSettings();
+		// 	ctre.updateSettings();
+		// 	e.preventDefault();
+		// });
 
 		for (let elm of div.querySelectorAll('.ct_more a')) {
 			elm.addEventListener('click', function (e) {
