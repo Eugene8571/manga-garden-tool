@@ -205,7 +205,7 @@ const ctre = {
 				top: 200px;
 				right: 10px;
 				width: 360px;
-				height: 350px; 
+				height: 340px; 
 				padding: 10px 20px;
 				box-sizing: content-box;
 				background: #fff;
@@ -233,7 +233,8 @@ const ctre = {
 			}
 			#ctre_wnd a, #ctre_wnd input[type=checkbox] { cursor: pointer; }
 
-			#ctre_wnd .ct_minimize, #ctre_wnd .ct_close {
+			#ctre_wnd .ct_minimize, 
+			#ctre_wnd .ct_close {
 				display: block; cursor: pointer;
 				position: absolute; top: 0; right: 0; width: 32px; line-height: 32px;
 				font-size: 14px; text-align: center;
@@ -268,7 +269,9 @@ const ctre = {
 			#ctre_wnd .ct_settings a { color: #999; }
 			#ctre_wnd .ct_settings a:hover { color: #666; }
 			#ctre_wnd .activationKeys { float: left; margin-left: -2px; }
-			#ctre_wnd .transposeKeys { float: right; }
+			#ctre_wnd .transposeKeys { 
+				margin-bottom: 5px;
+				 }
 			#ctre_current_elm {
 				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
 				height: 84px; overflow: hidden;
@@ -309,12 +312,21 @@ const ctre = {
 			#ctre_wnd .ct_more a { color: #0fb4d4; font-size: inherit; text-decoration: none; transition: color 0.5s; }
 			#ctre_wnd .ct_more a:hover { color: #000; }
 
-			#ctre_wnd.minimized { width: 80px; height: 12px; }
+			#ctre_wnd.minimized { width: 147px; height: 12px; }
 			#ctre_wnd.minimized > * { display: none; }
 			#ctre_wnd.minimized .ct_minimize,
 			#ctre_wnd.minimized .ct_close { display: block; }
 			#ctre_wnd.minimized .ct_minimize i { display: inline-block; transform: rotate(-135deg); }
 			#ctre_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
+
+			#send_selected {
+				font-size: 21px;
+				width: 100px;
+				margin: 30px;
+				margin-left: 130px;
+				color: #fff;
+			}
+
 			`
 		];
 
@@ -478,11 +490,11 @@ const ctre = {
 		});
 	},
 
-	updateSettings: function() {
-		// эффект не заметен
-		return;
-		document.querySelector('#ctre_opt_remember').textContent = ctre.settings.remember ? 'yes' : 'no';
-	},
+	// updateSettings: function() {
+	// 	// эффект не заметен
+	// 	return;
+	// 	document.querySelector('#ctre_opt_remember').textContent = ctre.settings.remember ? 'yes' : 'no';
+	// },
 
 	saveSettings: function() {
 		// эффект не заметен
@@ -501,16 +513,8 @@ const ctre = {
 		div.setAttribute("id", "ctre_wnd");
 		document.body.appendChild(div);
 		div.innerHTML = `
-			<span class="ct_logo">Click to remove element
-				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16" height="16" viewBox="-300 -300 600 600">
-				<circle r="50"/>
-				<path d="M75,0 A 75,75 0 0,0 37.5,-64.952 L 125,-216.506 A 250,250 0 0,1 250,0 z" id="bld"/>
-				<use xlink:href="#bld" transform="rotate(120)"/>
-				<use xlink:href="#bld" transform="rotate(240)"/>
-				</svg>
-			</span> <span class="version">v2</span>
-			<span class="ct_logo small">CTRE</span>
-			<div class="ct_minimize"><i>➜</i></div>
+			<span class="ct_logo">Select area to track.</span>
+			<span class="ct_logo small">Manga.Garden</span>
 			<div class="ct_close">✖</div>
 			<div id="ctre_current_elm">Select an element with the mouse</div>
 			<div class="keys">
@@ -520,6 +524,8 @@ const ctre = {
 			</div>
 			<div class="ct_separator"></div>
 			<div id="ctre_elm_list"></div>
+			<div id="send_selected" class="btn btn-info">OK</div>
+
 		`;
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
@@ -527,10 +533,10 @@ const ctre = {
 			e.preventDefault();
 		});
 
-		div.querySelector('.ct_minimize').addEventListener('click', function (e) {
-			div.classList.toggle('minimized');
-			e.preventDefault();
-		});
+		// div.querySelector('.ct_minimize').addEventListener('click', function (e) {
+		// 	div.classList.toggle('minimized');
+		// 	e.preventDefault();
+		// });
 
 		// div.querySelector('#ctre_opt_remember').addEventListener('click', function (e) {
 		// 	ctre.settings.remember = this.textContent == 'no';
@@ -549,7 +555,7 @@ const ctre = {
 		ctre.helpWindow = div;
 
 		ctre.updateElementList();
-		ctre.updateSettings();
+		// ctre.updateSettings();
 		
 		ctre.targetingMode = true;
 		document.addEventListener('mouseover', ctre.mouseover, true);
