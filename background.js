@@ -4,12 +4,12 @@
  */
 
 function setActive() {
-	chrome.browserAction.setIcon( { path: 'icons/action_active.png' } );
+	chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
 	chrome.browserAction.setTitle( { title: 'Click to remove element [active]' });
 }
 
 function setInactive() {
-	chrome.browserAction.setIcon( { path: 'icons/action_inactive.png' } );
+	chrome.browserAction.setIcon( { path: 'images/btn_48_inactive.png' } );
 	chrome.browserAction.setTitle( { title: 'Click to remove element' });
 }
 
@@ -18,7 +18,7 @@ function checkActive() {
 		if (!tab || tab.id < 0) return; // not really a tab, most likely a devtools window
 
 		if (tab.url.substr(0,4) != 'http') {
-			chrome.browserAction.setIcon( { path: 'icons/action_unavailable.png' } );
+			chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
 			chrome.browserAction.setTitle( { title: 'Click to remove element [unavailable for this tab]' });
 			chrome.browserAction.disable(tab.id);
 			return;
