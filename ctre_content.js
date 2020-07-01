@@ -330,19 +330,19 @@ const ctre = {
 
 
 
-			#send_selected,
-			#ct_btns_space,
+			.send_selected,
+			.ct_btns_space,
 			#ctre_wnd .ct_close {
 				display: inline-block;
 				vertical-align: middle;
 			}
 
-			#ct_btns_space {
+			.ct_btns_space {
 				width: 70px;
 			}
 
 
-			#send_selected > button,
+			.send_selected > button,
 			#ctre_wnd .ct_close > button {
 				text-align: center;
 				font-size: 21px;
@@ -354,7 +354,7 @@ const ctre = {
 
 
 
-			#send_selected > button {
+			.send_selected > button {
 				background-color: #3498DB;
 
 			}
@@ -560,12 +560,19 @@ const ctre = {
 			</div>
 			<div id="ctre_elm_list"></div>
 			<div id="ct_btns">
-				<div id="send_selected"><button>✔️</button></div>
-				<div id="ct_btns_space"></div>
+				<div class="send_selected"><button>✔️</button></div>
+				<div class="ct_btns_space"></div>
 				<div class="ct_close"><button>✖️</button></div>
 			</div>
 
 		`;
+
+		div.querySelector('.send_selected').addEventListener('click', function (e) {
+			var block = encodeURIComponent(ctre.getPathHTML(ctre.markedElement));
+			var url = document.location.href;
+			var line = "http://manga.garden/add_title?url=" + url + "?block=" + block
+			window.location = line
+		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
 			ctre.deactivate();
