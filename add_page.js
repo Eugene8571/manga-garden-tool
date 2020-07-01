@@ -6,7 +6,7 @@ chrome.tabs.query({'active': true, 'windowId': chrome.windows.WINDOW_ID_CURRENT}
         var encoded = encodeURIComponent(tabs[0].url);
         div.innerHTML = "<h3><a id='add_title_link' \
         class='badge' target='_blank' \
-        href='http://manga-checklist.tk/add_title?url=" + encoded + "'>+</a></h3>";
+        href='http://manga.garden/add_title?url=" + encoded + "'>+</a></h3>";
 
         document.body.append(div);
     }
