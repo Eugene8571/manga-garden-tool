@@ -233,21 +233,21 @@ const ctre = {
 			}
 			#ctre_wnd a, #ctre_wnd input[type=checkbox] { cursor: pointer; }
 
-			#ctre_wnd .ct_minimize, 
-			#ctre_wnd .ct_close {
-				display: block; cursor: pointer;
-				position: absolute; top: 0; right: 0; width: 32px; line-height: 32px;
-				font-size: 14px; text-align: center;
-				transition: color 0.3s, background 0.3s;
-			}
+			// #ctre_wnd .ct_minimize, 
+			// #ctre_wnd .ct_close {
+			// 	display: block; cursor: pointer;
+			// 	position: absolute; top: 0; right: 0; width: 32px; line-height: 32px;
+			// 	font-size: 14px; text-align: center;
+			// 	transition: color 0.3s, background 0.3s;
+			// }
 			#ctre_wnd .ct_minimize { right: 32px; background: #fff; color: #0fb4d4; }
 			#ctre_wnd .ct_minimize:hover { background: #0fb4d4; color: #fff; }
 			#ctre_wnd .ct_minimize i {
 				display: inline-block; cursor: pointer;
 				transform: rotate(45deg); transition: transform 0.5s;
 			}
-			#ctre_wnd .ct_close { color: #f00; background: #fff0f0; }
-			#ctre_wnd .ct_close:hover { color: #fff; background: #f00; }
+			// #ctre_wnd .ct_close { color: #f00; background: #fff0f0; }
+			// #ctre_wnd .ct_close:hover { color: #fff; background: #f00; }
 			#ctre_wnd .key {
 				display: inline-block;
 				font-family: monospace;
@@ -315,21 +315,55 @@ const ctre = {
 			#ctre_wnd.minimized { width: 147px; height: 12px; }
 			#ctre_wnd.minimized > * { display: none; }
 			#ctre_wnd.minimized .ct_minimize,
-			#ctre_wnd.minimized .ct_close { display: block; }
+			// #ctre_wnd.minimized .ct_close { display: block; }
 			#ctre_wnd.minimized .ct_minimize i { display: inline-block; transform: rotate(-135deg); }
 			#ctre_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
 
-			#send_selected {
-				background-color: #3498DB;
+
+			#ct_btns {
+				width: 100%;
+				text-align: center;
+				margin-top: 15px;
+			}
+
+
+
+
+
+			#send_selected,
+			#ct_btns_space,
+			#ctre_wnd .ct_close {
+				display: inline-block;
+				vertical-align: middle;
+			}
+
+			#ct_btns_space {
+				width: 70px;
+			}
+
+
+			#send_selected > button,
+			#ctre_wnd .ct_close > button {
 				text-align: center;
 				font-size: 21px;
 				width: 100px;
 				height: 41px;
-				margin: 30px;
-				margin-left: 130px;
-				color: #fff;
-				vertical-align: middle;
+				border: 0;
 			}
+
+
+
+
+			#send_selected > button {
+				background-color: #3498DB;
+
+			}
+			#ctre_wnd .ct_close > button {
+				background-color: #E67E22;
+			}
+
+
+
 
 			`
 		];
@@ -518,17 +552,18 @@ const ctre = {
 		document.body.appendChild(div);
 		div.innerHTML = `
 			<span class="ct_logo">Select area to track.</span>
-			<span class="ct_logo small">Manga.Garden</span>
-			<div class="ct_close">✖</div>
 			<div id="ctre_current_elm">Select an element with the mouse</div>
 			<div class="keys">
 				<div class="transposeKeys">
 					<span class="key">Q</span>/<span class="key">W</span>: move up or down one level
 				</div>
 			</div>
-			<div class="ct_separator"></div>
 			<div id="ctre_elm_list"></div>
-			<div id="send_selected" class="btn btn-info">OK</div>
+			<div id="ct_btns">
+				<div id="send_selected"><button>✔️</button></div>
+				<div id="ct_btns_space"></div>
+				<div class="ct_close"><button>✖️</button></div>
+			</div>
 
 		`;
 
