@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "Add page",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Send current page URL to your Manga Checklist.",
+    "description": "Description of the extension."
+  }
+}
