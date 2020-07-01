@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "Добавить",
+    "description": "Name of the extension."
+  },
+
+  "extensionDescription": {
+    "message": "Добавить страницу в список отслеживания.",
+    "description": "Description of the extension."
+  }
+}
