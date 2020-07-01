@@ -570,7 +570,8 @@ const ctre = {
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
 			var block = encodeURIComponent(ctre.getPathHTML(ctre.markedElement));
 			var url = document.location.href;
-			var line = "http://manga.garden/add_title?url=" + url + "?block=" + block
+			var line = "http://manga.garden/add_title?url=" + url + "&block=" + block
+			alert(line)
 			window.location = line
 		});
 
