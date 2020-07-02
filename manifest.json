@@ -16,16 +16,6 @@
 		"default_popup": "popup.html"
 
 	},
-	// "commands": {
-	// 	"_execute_browser_action": {
-	// 		"suggested_key": {
-	// 			"windows": "Ctrl+Shift+X",
-	// 			"mac": "Command+Shift+X",
-	// 			"chromeos": "Ctrl+Shift+X",
-	// 			"linux": "Ctrl+Shift+X"
-	// 		}
-	// 	}
-	// },
 	"content_scripts": [ {
 		"all_frames": false,
 		"js": [ "mge_content.js" ],
