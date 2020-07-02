@@ -34,23 +34,9 @@ const mge = {
 		if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
 			mge.markedElement = mge.markedElement.relatedElement;
 		}
-		// возможное место для условия
-		// let i = 0;
-		// for (i = 0; i < mge.transpose; i++) {
-		// 	if (mge.markedElement.parentNode != window.document) {
-		// 		mge.markedElement = mge.markedElement.parentNode;
-		// 	} else {
-		// 		break;
-		// 	}
-		// }
-		
-		// mge.transpose = i;
+
 		mge.addHighlightStyle(mge.markedElement);
 
-		// alert(mge.getPathHTML(mge.hoveredElement, mge.transpose));
-		// document.querySelector('#mge_current_elm').innerHTML = mge.getPathHTML(mge.hoveredElement, mge.transpose);
-		// document.querySelector('#mge_current_elm').scrollTop = 9999;
-		// сюда
 	},
 
 	highlightSelected: function() {
@@ -77,7 +63,6 @@ const mge = {
 		mge.selectedElement = mge.markedElement
 		mge.addHighlightStyle(mge.selectedElement);
 
-		// alert(mge.getPathHTML(mge.hoveredElement, mge.transpose));
 		document.querySelector('#mge_selected_elm').innerHTML = mge.getPathHTML(mge.markedElement, mge.transpose);
 		document.querySelector('#mge_selected_elm').scrollTop = 9999;
 		// сюда
@@ -119,16 +104,6 @@ const mge = {
 	},
 	
 	keyDown: function(e) {
-		// managed via browser actions
-		/*if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode == 88) {
-			if (mge.targetingMode)
-				mge.deactivate();
-			else
-				mge.activate();
-				
-			e.stopPropagation(); e.preventDefault();
-			return false;
-		}*/
 
 		if (!mge.clickedElement) return;
 		
@@ -181,7 +156,6 @@ const mge = {
 		mge.updateElementList();
 		mge.triggerResize();
 		mge.refreshOverlays();
-		// mge.updateSavedElements();
 
 		e.preventDefault();
 		e.stopPropagation();
@@ -279,16 +253,12 @@ const mge = {
 			}
 			#mge_wnd a, #mge_wnd input[type=checkbox] { cursor: pointer; }
 
-			// #mge_wnd .ct_minimize, 
 			// #mge_wnd .ct_close {
 			// 	display: block; cursor: pointer;
 			// 	position: absolute; top: 0; right: 0; width: 32px; line-height: 32px;
 			// 	font-size: 14px; text-align: center;
 			// 	transition: color 0.3s, background 0.3s;
 			// }
-			#mge_wnd .ct_minimize { right: 32px; background: #fff; color: #0fb4d4; }
-			#mge_wnd .ct_minimize:hover { background: #0fb4d4; color: #fff; }
-			#mge_wnd .ct_minimize i {
 				display: inline-block; cursor: pointer;
 				transform: rotate(45deg); transition: transform 0.5s;
 			}
@@ -370,9 +340,7 @@ const mge = {
 
 			#mge_wnd.minimized { width: 147px; height: 12px; }
 			#mge_wnd.minimized > * { display: none; }
-			#mge_wnd.minimized .ct_minimize,
 			// #mge_wnd.minimized .ct_close { display: block; }
-			#mge_wnd.minimized .ct_minimize i { display: inline-block; transform: rotate(-135deg); }
 			#mge_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
 
 
@@ -661,18 +629,6 @@ const mge = {
 			mge.deactivate();
 			e.preventDefault();
 		});
-
-		// div.querySelector('.ct_minimize').addEventListener('click', function (e) {
-		// 	div.classList.toggle('minimized');
-		// 	e.preventDefault();
-		// });
-
-		// div.querySelector('#mge_opt_remember').addEventListener('click', function (e) {
-		// 	mge.settings.remember = this.textContent == 'no';
-		// 	mge.saveSettings();
-		// 	mge.updateSettings();
-		// 	e.preventDefault();
-		// });
 
 		for (let elm of div.querySelectorAll('.ct_more a')) {
 			elm.addEventListener('click', function (e) {
