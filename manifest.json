@@ -1,10 +1,11 @@
 {
 "update_url": "https://clients2.google.com/service/update2/crx",
 
-	"name": "Click to Remove Element",
-	"version": "2.0.6",
+	"name": "__MSG_extensionName__",
+	"version": "0.0.0.3",
 	"manifest_version": 2,
-	"description": "Remove annoying elements with a single click",
+	"default_locale":"ru", 
+	"description": "__MSG_extensionDescription__",
 	"icons": {
 		"128": "images/btn_128.png",
 		"48": "images/btn_48.png",
@@ -15,16 +16,16 @@
 		"default_popup": "popup.html"
 
 	},
-	"commands": {
-		"_execute_browser_action": {
-			"suggested_key": {
-				"windows": "Ctrl+Shift+X",
-				"mac": "Command+Shift+X",
-				"chromeos": "Ctrl+Shift+X",
-				"linux": "Ctrl+Shift+X"
-			}
-		}
-	},
+	// "commands": {
+	// 	"_execute_browser_action": {
+	// 		"suggested_key": {
+	// 			"windows": "Ctrl+Shift+X",
+	// 			"mac": "Command+Shift+X",
+	// 			"chromeos": "Ctrl+Shift+X",
+	// 			"linux": "Ctrl+Shift+X"
+	// 		}
+	// 	}
+	// },
 	"content_scripts": [ {
 		"all_frames": false,
 		"js": [ "ctre_content.js" ],
