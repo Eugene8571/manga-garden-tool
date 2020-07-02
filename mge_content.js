@@ -237,33 +237,17 @@ const mge = {
 				margin-top: 15px;
 				text-align: center;
 
-
-
-				// position: fixed; bottom: 0; right: 10px; width: 360px; padding: 10px 20px;
-				// box-sizing: content-box;
-				// text-align: left; font-family: Helvetica, Arial, sans-serif;
-				// background: #fff; box-shadow: 0px 0px 40px rgba(0,0,0,0.15);
-				// z-index: ${mge.maxZIndex};
-				// font-size: 12px; color: #666;
 			}
 			#mge_wnd * {
 				line-height: 1.3; font-size: inherit; color: inherit;
 				font-weight: normal; font-style: normal; font-family: inherit;
 				cursor: default;
 			}
-			#mge_wnd a, #mge_wnd input[type=checkbox] { cursor: pointer; }
 
-			// #mge_wnd .ct_close {
-			// 	display: block; cursor: pointer;
-			// 	position: absolute; top: 0; right: 0; width: 32px; line-height: 32px;
-			// 	font-size: 14px; text-align: center;
-			// 	transition: color 0.3s, background 0.3s;
-			// }
+
 				display: inline-block; cursor: pointer;
 				transform: rotate(45deg); transition: transform 0.5s;
 			}
-			// #mge_wnd .ct_close { color: #f00; background: #fff0f0; }
-			// #mge_wnd .ct_close:hover { color: #fff; background: #f00; }
 			#mge_wnd .key {
 				display: inline-block;
 				font-family: monospace;
@@ -282,15 +266,6 @@ const mge = {
 			}
 			#mge_wnd .ct_logo.anim svg { transform: rotate(0deg); }
 
-			#mge_wnd .version { color: #bbb; }
-			#mge_wnd .keys { font-size: 11px; overflow: hidden; margin-top: 4px; color: #bbb; }
-			#mge_wnd .ct_settings { font-size: 11px; overflow: hidden; margin: 8px 0; color: #bbb; }
-			#mge_wnd .ct_settings a { color: #999; }
-			#mge_wnd .ct_settings a:hover { color: #666; }
-			#mge_wnd .activationKeys { float: left; margin-left: -2px; }
-			#mge_wnd .transposeKeys { 
-				margin-bottom: 5px;
-				 }
 			#mge_current_elm {
 				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
 				height: 84px; overflow: hidden;
@@ -325,7 +300,6 @@ const mge = {
 			#mge_selected_elm td:nth-child(2) { text-align: center; }
 			#mge_selected_elm td:nth-child(3) { padding-right: 20px; }
 			#mge_selected_elm tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
-			#mge_selected_elm td input { display: inline; -webkit-appearance: checkbox; }
 			#mge_selected_elm td input:before, 
 			#mge_selected_elm td input:after { content: none; }
 			#mge_selected_elm .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
@@ -430,24 +404,10 @@ const mge = {
 		let line = "";
 
 		if (mge.hiddenElements.length) {
-			// !!! одиночный вызов строки позиции элемента
-		
-			// alert(mge.getPathHTML(mge.markedElement));
+
 			line = mge.getPathHTML(mge.selectedElement);
 
-			// lines.push('<table><tr class="ct_heading"><td>Removed element</td><td>Remember?</td><td></td></tr>');
 
-
-
-			// for (let elm of mge.hiddenElements) {
-			// 	lines.push(`<tr>
-			// 		<td class="ct_selector"><a href="" class="ct_edit_selector">edit</a>${escapeHTML(elm.selector)}</td>
-			// 		<td><input type="checkbox"${elm.permanent ? ' checked' : ''}></td>
-			// 		<td><a href="" class="ct_delete">✖</a>
-			// 	</tr>`);
-			// }
-
-			// lines.push('</table>');
 			elmList.classList.add('hasContent');
 			wind.classList.add('hasContent');
 
@@ -456,7 +416,6 @@ const mge = {
 			wind.classList.remove('hasContent');
 		}
 		
-		// elmList.innerHTML = lines.join('\n');
 		elmList.innerHTML = line
 
 		function onChangePermanent () {
@@ -465,7 +424,6 @@ const mge = {
 			var hiddenElement = mge.hiddenElements[index];
 			hiddenElement.permanent = this.checked;
 
-			// mge.updateSavedElements();
 		}
 
 		function onDelete (e) {
@@ -574,17 +532,6 @@ const mge = {
 		let div = document.createElement('div');
 		div.setAttribute("id", "mge_wnd");
 		document.body.appendChild(div);
-
-
-
-			// <div class="keys">
-			// 	<div class="transposeKeys">
-			// 		<span class="key">Q</span>/<span class="key">W</span>: move up or down one level
-			// 	</div>
-			// </div>
-			// <div id="mge_current_elm">Select an element with the mouse</div>
-
-
 
 		div.innerHTML = `
 			<span class="ct_logo">Place of Interest.</span>
