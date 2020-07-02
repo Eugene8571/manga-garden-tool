@@ -129,8 +129,9 @@ const mge = {
 		let selector = mge.getSelector(mge.markedElement);
 
 		if (!selector) return;
-
-		mge.selectedElement = mge.markedElement;
+		// присвоение 
+		if (!mge.selectedElement) {
+		mge.selectedElement = mge.markedElement;}
 
 		mge.hiddenElements.push({
 			selector,
