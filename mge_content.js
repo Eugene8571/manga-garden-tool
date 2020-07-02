@@ -62,8 +62,8 @@ const mge = {
 	},
 
 	removeHighlightStyle: function (elm) {
-		mge.markedElement.style.outline = '';
-		mge.markedElement.style.outlineOffset = '';
+		elm.style.outline = '';
+		elm.style.outlineOffset = '';
 	},
 	
 	mouseover: function(e) {
@@ -207,11 +207,11 @@ const mge = {
 			`
 			#mge_wnd {
 				display: none;
-				position: absolute;
-				top: 200px;
+				position: fixed;
+				top: 50px;
 				right: 10px;
-				width: 360px;
-				height: 340px; 
+				width: 460px;
+				height: 220px; 
 				padding: 10px 20px;
 				box-sizing: content-box;
 				background: #fff;
@@ -222,6 +222,7 @@ const mge = {
 				0 5px 5px rgba(0,0,0,0.22);  
 				padding: 10px;
 				margin-top: 15px;
+				text-align: center;
 
 
 
@@ -261,7 +262,10 @@ const mge = {
 				padding: 0 2px; margin: 0 2px;
 				border: solid 1px #d5d5d5; border-radius: 3px;
 			}
-			#mge_wnd .ct_logo { font-size: 15px; font-weight: bold; }
+			#mge_wnd .ct_logo { 
+				font-size: 18px; 
+				// font-weight: bold; 
+			}
 			#mge_wnd .ct_logo.small { display: none; }
 			#mge_wnd .ct_logo svg {
 				fill: #666; vertical-align: -15%;
@@ -287,7 +291,7 @@ const mge = {
 
 			#mge_elm_list { 
 				// display: none; 
-				margin: 0 px; 
+				margin-top: 5px; 
 				background: #f7f7f7; 
 				border: solid 12px #f7f7f7; 
 				border-width: 12px 0 12px 0; 
@@ -415,7 +419,7 @@ const mge = {
 			// !!! одиночный вызов строки позиции элемента
 		
 			// alert(mge.getPathHTML(mge.markedElement));
-			line = mge.getPathHTML(mge.markedElement);
+			line = mge.getPathHTML(mge.selectedElement);
 
 			// lines.push('<table><tr class="ct_heading"><td>Removed element</td><td>Remember?</td><td></td></tr>');
 
@@ -564,13 +568,12 @@ const mge = {
 			// 		<span class="key">Q</span>/<span class="key">W</span>: move up or down one level
 			// 	</div>
 			// </div>
-
+			// <div id="mge_current_elm">Select an element with the mouse</div>
 
 
 
 		div.innerHTML = `
-			<span class="ct_logo">Select area to track.</span>
-			<div id="mge_current_elm">Select an element with the mouse</div>
+			<span class="ct_logo">Place of Interest.</span>
 
 			<div id="mge_elm_list"></div>
 			<div id="ct_btns">
@@ -648,7 +651,12 @@ const mge = {
 			mge.removeHighlightStyle(mge.markedElement);
 		}
 		mge.markedElement = false;
-		
+
+		if (mge.selectedElement) {
+			mge.removeHighlightStyle(mge.selectedElement);
+		}
+		mge.selectedElement = false;
+
 		mge.helpWindow.parentNode.removeChild(mge.helpWindow);
 		
 		document.removeEventListener('mouseover', mge.mouseover, true);
