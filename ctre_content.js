@@ -558,14 +558,22 @@ const mge = {
 		let div = document.createElement('div');
 		div.setAttribute("id", "mge_wnd");
 		document.body.appendChild(div);
+
+
+
+			// <div class="keys">
+			// 	<div class="transposeKeys">
+			// 		<span class="key">Q</span>/<span class="key">W</span>: move up or down one level
+			// 	</div>
+			// </div>
+
+
+
+
 		div.innerHTML = `
 			<span class="ct_logo">Select area to track.</span>
 			<div id="mge_current_elm">Select an element with the mouse</div>
-			<div class="keys">
-				<div class="transposeKeys">
-					<span class="key">Q</span>/<span class="key">W</span>: move up or down one level
-				</div>
-			</div>
+
 			<div id="mge_elm_list"></div>
 			<div id="ct_btns">
 				<div class="send_selected"><button>✔️</button></div>
@@ -579,7 +587,7 @@ const mge = {
 			// e.preventDefault();
 			// e.stopPropagation();
 			// var path_html = encodeURIComponent(mge.getPathHTML(mge.markedElement));
-			var path_html = mge.getPathHTML(mge.selectedElement);
+			var path_html = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
 			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
 			alert(line);
