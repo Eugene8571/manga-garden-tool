@@ -1,7 +1,3 @@
-/**
- * CTRE v2
- * by blade.sk
- */
 
 function setActive() {
 	chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
@@ -51,7 +47,7 @@ document.getElementById('picker_btn').addEventListener('click', function() {
 
 			if (!response) {
 				chrome.tabs.executeScript(tab.id, {
-					// code: "if (confirm('This tab was loaded before CTRE was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
+					// code: "if (confirm('This tab was loaded before Manga.garden Extension was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
 					code: "location.reload();"
 				});
 			}
