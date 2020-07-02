@@ -250,7 +250,7 @@ const mge = {
 				top: 50px;
 				right: 10px;
 				width: 460px;
-				height: 220px; 
+				height: 250px; 
 				padding: 10px 20px;
 				box-sizing: content-box;
 				background: #fff;
@@ -334,9 +334,16 @@ const mge = {
 				background: #f7f7f7; 
 				border: solid 12px #f7f7f7; 
 				border-width: 12px 0 12px 0; 
-				height: 90px; 
+				height: 84px; 
 				overflow: hidden; 
 			}
+
+			.longer,
+			.shorter {
+				margin: 5px;
+			}
+
+
 			// #mge_selected_elm.hasContent { display: block; }
 			#mge_wnd.hasContent { display: inline-block; }
 			#mge_selected_elm table { border: 0; width: 100%; border-spacing: 0; }
@@ -615,6 +622,12 @@ const mge = {
 			<span class="ct_logo">Place of Interest.</span>
 
 			<div id="mge_selected_elm"></div>
+
+			<div>
+				<button class="shorter">< Q</button>
+				<button class="longer">W ></button>
+			</div>
+
 			<div id="ct_btns">
 				<div class="send_selected"><button>✔️</button></div>
 				<div class="ct_btns_space"></div>
@@ -622,6 +635,15 @@ const mge = {
 			</div>
 
 		`;
+
+		div.querySelector('.longer').addEventListener('click', function (e) {
+			if (mge.transpose > 0) mge.transpose--;
+			mge.highlightSelected();
+		});
+		div.querySelector('.shorter').addEventListener('click', function (e) {
+			mge.transpose++;
+			mge.highlightSelected();
+		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
 			// e.preventDefault();
