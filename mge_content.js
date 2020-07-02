@@ -291,22 +291,22 @@ const mge = {
 
 			// #mge_selected_elm.hasContent { display: block; }
 			#mge_wnd.hasContent { display: inline-block; }
-			#mge_selected_elm table { border: 0; width: 100%; border-spacing: 0; }
-			#mge_selected_elm tr { border: 0; }
-			#mge_selected_elm tr.ct_heading td { color: #bbb; }
-			#mge_selected_elm td { padding: 0; border: 0; background: #f7f7f7; }
-			#mge_selected_elm tr:nth-child(even) td { background: #fcfcfc; }
-			#mge_selected_elm td:nth-child(1) { padding-left: 20px; }
-			#mge_selected_elm td:nth-child(2) { text-align: center; }
-			#mge_selected_elm td:nth-child(3) { padding-right: 20px; }
-			#mge_selected_elm tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
-			#mge_selected_elm td input:before, 
-			#mge_selected_elm td input:after { content: none; }
-			#mge_selected_elm .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
-			#mge_selected_elm .ct_edit_selector:hover { color: #000; }
-			#mge_selected_elm tr:hover .ct_edit_selector { opacity: 1; }
-			#mge_selected_elm a.ct_delete { color: #f00; padding: 4px; text-decoration: none; font-size: 14px; }
-			#mge_selected_elm a.ct_delete:hover { color: #fff; background: #f00; }
+			// #mge_selected_elm table { border: 0; width: 100%; border-spacing: 0; }
+			// #mge_selected_elm tr { border: 0; }
+			// #mge_selected_elm tr.ct_heading td { color: #bbb; }
+			// #mge_selected_elm td { padding: 0; border: 0; background: #f7f7f7; }
+			// #mge_selected_elm tr:nth-child(even) td { background: #fcfcfc; }
+			// #mge_selected_elm td:nth-child(1) { padding-left: 20px; }
+			// #mge_selected_elm td:nth-child(2) { text-align: center; }
+			// #mge_selected_elm td:nth-child(3) { padding-right: 20px; }
+			// #mge_selected_elm tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
+			// #mge_selected_elm td input:before, 
+			// #mge_selected_elm td input:after { content: none; }
+			// #mge_selected_elm .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
+			// #mge_selected_elm .ct_edit_selector:hover { color: #000; }
+			// #mge_selected_elm tr:hover .ct_edit_selector { opacity: 1; }
+			// #mge_selected_elm a.ct_delete { color: #f00; padding: 4px; text-decoration: none; font-size: 14px; }
+			// #mge_selected_elm a.ct_delete:hover { color: #fff; background: #f00; }
 
 			#mge_wnd .ct_more { border-top: solid 1px #f7f7f7; margin: 0 -20px; padding-top: 12px; color: #bbb; font-size: 10px; text-align: center; }
 			#mge_wnd .ct_more a { color: #0fb4d4; font-size: inherit; text-decoration: none; transition: color 0.5s; }
