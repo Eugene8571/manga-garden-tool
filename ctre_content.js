@@ -1,11 +1,12 @@
 /**
- * CTRE v2
+ * mge v2
  * by blade.sk
  */
 
-const ctre = {
+const mge = {
 	hoveredElement: false,
 	markedElement: false,
+	selectedElement: false,
 	targetingMode: false,
 	transpose: 0, // how far to travel up the line of ancestors
 	maxZIndex: 2147483647,
@@ -20,62 +21,67 @@ const ctre = {
 		window.dispatchEvent(evt);
 
 		setTimeout(function() { // also update overlays
-			ctre.refreshOverlays();
+			mge.refreshOverlays();
 		});
 	},
 	
 	highlightElement: function() {
-		if (!ctre.hoveredElement) return;
+		if (!mge.hoveredElement) return;
 		
-		if (ctre.markedElement) {
-			ctre.removeHighlightStyle(ctre.markedElement);
+		if (mge.markedElement) {
+			mge.removeHighlightStyle(mge.markedElement);
 		}
-		
-		ctre.markedElement = ctre.hoveredElement;
-		if (ctre.markedElement.className == "ctre_overlay") { // this is just a proxy for an iframe
-			ctre.markedElement = ctre.markedElement.relatedElement;
+
+		mge.markedElement = mge.hoveredElement;
+		if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
+			mge.markedElement = mge.markedElement.relatedElement;
 		}
-		
+		// возможное место для условия
 		let i = 0;
-		for (i = 0; i < ctre.transpose; i++) {
-			if (ctre.markedElement.parentNode != window.document) {
-				ctre.markedElement = ctre.markedElement.parentNode;
+		for (i = 0; i < mge.transpose; i++) {
+			if (mge.markedElement.parentNode != window.document) {
+				mge.markedElement = mge.markedElement.parentNode;
 			} else {
 				break;
 			}
 		}
 		
-		ctre.transpose = i;
-		ctre.addHighlightStyle(ctre.markedElement);
+		mge.transpose = i;
+		mge.addHighlightStyle(mge.markedElement);
 
-		// alert(ctre.getPathHTML(ctre.hoveredElement, ctre.transpose));
-		document.querySelector('#ctre_current_elm').innerHTML = ctre.getPathHTML(ctre.hoveredElement, ctre.transpose);
-		document.querySelector('#ctre_current_elm').scrollTop = 9999;
+		// alert(mge.getPathHTML(mge.hoveredElement, mge.transpose));
+		document.querySelector('#mge_current_elm').innerHTML = mge.getPathHTML(mge.hoveredElement, mge.transpose);
+		document.querySelector('#mge_current_elm').scrollTop = 9999;
+		// сюда
 	},
 
 	addHighlightStyle: function (elm) {
-		ctre.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
-		ctre.markedElement.style.outlineOffset = '-5px';
+		if (mge.selectedElement) {
+			mge.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+			mge.selectedElement.style.outlineOffset = '-5px';			
+			return;}
+		mge.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+		mge.markedElement.style.outlineOffset = '-5px';
 	},
 
 	removeHighlightStyle: function (elm) {
-		ctre.markedElement.style.outline = '';
-		ctre.markedElement.style.outlineOffset = '';
+		mge.markedElement.style.outline = '';
+		mge.markedElement.style.outlineOffset = '';
 	},
 	
 	mouseover: function(e) {
-		if (ctre.isChildOfCTREWindow(e.target)) return;
+		if (mge.isChildOfmgeWindow(e.target)) return;
 		
-		if (ctre.hoveredElement != e.target) {
-			ctre.transpose = 0;
-			ctre.hoveredElement = e.target;
-			ctre.highlightElement();
+		if (mge.hoveredElement != e.target) {
+			mge.transpose = 0;
+			mge.hoveredElement = e.target;
+			mge.highlightElement();
 		}
 	},
 
-	isChildOfCTREWindow: function(elm) {
+	isChildOfmgeWindow: function(elm) {
 		for (var i = 0; i < 8; i++) {
-			if (elm == ctre.helpWindow) return true;
+			if (elm == mge.helpWindow) return true;
 			elm = elm.parentNode;
 			if (!elm) break;
 		}
@@ -86,27 +92,27 @@ const ctre = {
 	keyDown: function(e) {
 		// managed via browser actions
 		/*if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.keyCode == 88) {
-			if (ctre.targetingMode)
-				ctre.deactivate();
+			if (mge.targetingMode)
+				mge.deactivate();
 			else
-				ctre.activate();
+				mge.activate();
 				
 			e.stopPropagation(); e.preventDefault();
 			return false;
 		}*/
 
-		if (!ctre.targetingMode) return;
+		if (!mge.targetingMode) return;
 		
 		if (e.keyCode == 27) {
-			ctre.deactivate();
+			mge.deactivate();
 		}
 		
 		if (e.keyCode == 87) { // w
-			if (ctre.transpose > 0) ctre.transpose--;
-			ctre.highlightElement();
+			if (mge.transpose > 0) mge.transpose--;
+			mge.highlightElement();
 		} else if (e.keyCode == 81) { // q
-			ctre.transpose++;
-			ctre.highlightElement();
+			mge.transpose++;
+			mge.highlightElement();
 		}
 
 		e.stopPropagation(); e.preventDefault();
@@ -114,29 +120,31 @@ const ctre = {
 	},
 	
 	keyUp: function(e) {
-		if (!ctre.targetingMode) return;
+		if (!mge.targetingMode) return;
 
 		e.stopPropagation(); e.preventDefault();
 		return false;
 	},
 	
 	hideTarget: function(e) {
-		if (ctre.isChildOfCTREWindow(e.target)) return;
+		if (mge.isChildOfmgeWindow(e.target)) return;
 
-		let selector = ctre.getSelector(ctre.markedElement);
+		let selector = mge.getSelector(mge.markedElement);
 
 		if (!selector) return;
 
-		ctre.hiddenElements.push({
+		mge.selectedElement = mge.markedElement;
+
+		mge.hiddenElements.push({
 			selector,
-			permanent: !!ctre.settings.remember,
+			permanent: !!mge.settings.remember,
 		});
 
-		ctre.updateCSS();
-		ctre.updateElementList();
-		ctre.triggerResize();
-		ctre.refreshOverlays();
-		// ctre.updateSavedElements();
+		mge.updateCSS();
+		mge.updateElementList();
+		mge.triggerResize();
+		mge.refreshOverlays();
+		// mge.updateSavedElements();
 
 		e.preventDefault();
 		e.stopPropagation();
@@ -168,7 +176,7 @@ const ctre = {
 		let path = [];
 		let currentElm = element;
 
-		if (currentElm.className == "ctre_overlay") { // this is just a proxy for an iframe
+		if (currentElm.className == "mge_overlay") { // this is just a proxy for an iframe
 			currentElm = currentElm.relatedElement;
 		}
 
@@ -189,7 +197,7 @@ const ctre = {
 	},
 
 	preventEvent: function(e) {
-		if (ctre.isChildOfCTREWindow(e.target)) return;
+		if (mge.isChildOfmgeWindow(e.target)) return;
 
 		e.preventDefault();
 		e.stopPropagation();
@@ -199,7 +207,7 @@ const ctre = {
 	updateCSS: function() {
 		let cssLines = [
 			`
-			#ctre_wnd {
+			#mge_wnd {
 				display: none;
 				position: absolute;
 				top: 200px;
@@ -223,63 +231,63 @@ const ctre = {
 				// box-sizing: content-box;
 				// text-align: left; font-family: Helvetica, Arial, sans-serif;
 				// background: #fff; box-shadow: 0px 0px 40px rgba(0,0,0,0.15);
-				// z-index: ${ctre.maxZIndex};
+				// z-index: ${mge.maxZIndex};
 				// font-size: 12px; color: #666;
 			}
-			#ctre_wnd * {
+			#mge_wnd * {
 				line-height: 1.3; font-size: inherit; color: inherit;
 				font-weight: normal; font-style: normal; font-family: inherit;
 				cursor: default;
 			}
-			#ctre_wnd a, #ctre_wnd input[type=checkbox] { cursor: pointer; }
+			#mge_wnd a, #mge_wnd input[type=checkbox] { cursor: pointer; }
 
-			// #ctre_wnd .ct_minimize, 
-			// #ctre_wnd .ct_close {
+			// #mge_wnd .ct_minimize, 
+			// #mge_wnd .ct_close {
 			// 	display: block; cursor: pointer;
 			// 	position: absolute; top: 0; right: 0; width: 32px; line-height: 32px;
 			// 	font-size: 14px; text-align: center;
 			// 	transition: color 0.3s, background 0.3s;
 			// }
-			#ctre_wnd .ct_minimize { right: 32px; background: #fff; color: #0fb4d4; }
-			#ctre_wnd .ct_minimize:hover { background: #0fb4d4; color: #fff; }
-			#ctre_wnd .ct_minimize i {
+			#mge_wnd .ct_minimize { right: 32px; background: #fff; color: #0fb4d4; }
+			#mge_wnd .ct_minimize:hover { background: #0fb4d4; color: #fff; }
+			#mge_wnd .ct_minimize i {
 				display: inline-block; cursor: pointer;
 				transform: rotate(45deg); transition: transform 0.5s;
 			}
-			// #ctre_wnd .ct_close { color: #f00; background: #fff0f0; }
-			// #ctre_wnd .ct_close:hover { color: #fff; background: #f00; }
-			#ctre_wnd .key {
+			// #mge_wnd .ct_close { color: #f00; background: #fff0f0; }
+			// #mge_wnd .ct_close:hover { color: #fff; background: #f00; }
+			#mge_wnd .key {
 				display: inline-block;
 				font-family: monospace;
 				background: #f7f7f7; color: #999;
 				padding: 0 2px; margin: 0 2px;
 				border: solid 1px #d5d5d5; border-radius: 3px;
 			}
-			#ctre_wnd .ct_logo { font-size: 15px; font-weight: bold; }
-			#ctre_wnd .ct_logo.small { display: none; }
-			#ctre_wnd .ct_logo svg {
+			#mge_wnd .ct_logo { font-size: 15px; font-weight: bold; }
+			#mge_wnd .ct_logo.small { display: none; }
+			#mge_wnd .ct_logo svg {
 				fill: #666; vertical-align: -15%;
 				transform: rotate(-240deg); transition: transform 1s;
 			}
-			#ctre_wnd .ct_logo.anim svg { transform: rotate(0deg); }
+			#mge_wnd .ct_logo.anim svg { transform: rotate(0deg); }
 
-			#ctre_wnd .version { color: #bbb; }
-			#ctre_wnd .keys { font-size: 11px; overflow: hidden; margin-top: 4px; color: #bbb; }
-			#ctre_wnd .ct_settings { font-size: 11px; overflow: hidden; margin: 8px 0; color: #bbb; }
-			#ctre_wnd .ct_settings a { color: #999; }
-			#ctre_wnd .ct_settings a:hover { color: #666; }
-			#ctre_wnd .activationKeys { float: left; margin-left: -2px; }
-			#ctre_wnd .transposeKeys { 
+			#mge_wnd .version { color: #bbb; }
+			#mge_wnd .keys { font-size: 11px; overflow: hidden; margin-top: 4px; color: #bbb; }
+			#mge_wnd .ct_settings { font-size: 11px; overflow: hidden; margin: 8px 0; color: #bbb; }
+			#mge_wnd .ct_settings a { color: #999; }
+			#mge_wnd .ct_settings a:hover { color: #666; }
+			#mge_wnd .activationKeys { float: left; margin-left: -2px; }
+			#mge_wnd .transposeKeys { 
 				margin-bottom: 5px;
 				 }
-			#ctre_current_elm {
+			#mge_current_elm {
 				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
 				height: 84px; overflow: hidden;
 			}
-			#ctre_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
-			#ctre_current_elm .pathNode.active { border-bottom: solid 2px #555; }
+			#mge_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
+			#mge_current_elm .pathNode.active { border-bottom: solid 2px #555; }
 
-			#ctre_elm_list { 
+			#mge_elm_list { 
 				// display: none; 
 				margin: 0 px; 
 				background: #f7f7f7; 
@@ -288,36 +296,36 @@ const ctre = {
 				height: 90px; 
 				overflow: hidden; 
 			}
-			// #ctre_elm_list.hasContent { display: block; }
-			#ctre_wnd.hasContent { display: inline-block; }
-			#ctre_elm_list table { border: 0; width: 100%; border-spacing: 0; }
-			#ctre_elm_list tr { border: 0; }
-			#ctre_elm_list tr.ct_heading td { color: #bbb; }
-			#ctre_elm_list td { padding: 0; border: 0; background: #f7f7f7; }
-			#ctre_elm_list tr:nth-child(even) td { background: #fcfcfc; }
-			#ctre_elm_list td:nth-child(1) { padding-left: 20px; }
-			#ctre_elm_list td:nth-child(2) { text-align: center; }
-			#ctre_elm_list td:nth-child(3) { padding-right: 20px; }
-			#ctre_elm_list tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
-			#ctre_elm_list td input { display: inline; -webkit-appearance: checkbox; }
-			#ctre_elm_list td input:before, 
-			#ctre_elm_list td input:after { content: none; }
-			#ctre_elm_list .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
-			#ctre_elm_list .ct_edit_selector:hover { color: #000; }
-			#ctre_elm_list tr:hover .ct_edit_selector { opacity: 1; }
-			#ctre_elm_list a.ct_delete { color: #f00; padding: 4px; text-decoration: none; font-size: 14px; }
-			#ctre_elm_list a.ct_delete:hover { color: #fff; background: #f00; }
+			// #mge_elm_list.hasContent { display: block; }
+			#mge_wnd.hasContent { display: inline-block; }
+			#mge_elm_list table { border: 0; width: 100%; border-spacing: 0; }
+			#mge_elm_list tr { border: 0; }
+			#mge_elm_list tr.ct_heading td { color: #bbb; }
+			#mge_elm_list td { padding: 0; border: 0; background: #f7f7f7; }
+			#mge_elm_list tr:nth-child(even) td { background: #fcfcfc; }
+			#mge_elm_list td:nth-child(1) { padding-left: 20px; }
+			#mge_elm_list td:nth-child(2) { text-align: center; }
+			#mge_elm_list td:nth-child(3) { padding-right: 20px; }
+			#mge_elm_list tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
+			#mge_elm_list td input { display: inline; -webkit-appearance: checkbox; }
+			#mge_elm_list td input:before, 
+			#mge_elm_list td input:after { content: none; }
+			#mge_elm_list .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
+			#mge_elm_list .ct_edit_selector:hover { color: #000; }
+			#mge_elm_list tr:hover .ct_edit_selector { opacity: 1; }
+			#mge_elm_list a.ct_delete { color: #f00; padding: 4px; text-decoration: none; font-size: 14px; }
+			#mge_elm_list a.ct_delete:hover { color: #fff; background: #f00; }
 
-			#ctre_wnd .ct_more { border-top: solid 1px #f7f7f7; margin: 0 -20px; padding-top: 12px; color: #bbb; font-size: 10px; text-align: center; }
-			#ctre_wnd .ct_more a { color: #0fb4d4; font-size: inherit; text-decoration: none; transition: color 0.5s; }
-			#ctre_wnd .ct_more a:hover { color: #000; }
+			#mge_wnd .ct_more { border-top: solid 1px #f7f7f7; margin: 0 -20px; padding-top: 12px; color: #bbb; font-size: 10px; text-align: center; }
+			#mge_wnd .ct_more a { color: #0fb4d4; font-size: inherit; text-decoration: none; transition: color 0.5s; }
+			#mge_wnd .ct_more a:hover { color: #000; }
 
-			#ctre_wnd.minimized { width: 147px; height: 12px; }
-			#ctre_wnd.minimized > * { display: none; }
-			#ctre_wnd.minimized .ct_minimize,
-			// #ctre_wnd.minimized .ct_close { display: block; }
-			#ctre_wnd.minimized .ct_minimize i { display: inline-block; transform: rotate(-135deg); }
-			#ctre_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
+			#mge_wnd.minimized { width: 147px; height: 12px; }
+			#mge_wnd.minimized > * { display: none; }
+			#mge_wnd.minimized .ct_minimize,
+			// #mge_wnd.minimized .ct_close { display: block; }
+			#mge_wnd.minimized .ct_minimize i { display: inline-block; transform: rotate(-135deg); }
+			#mge_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
 
 
 			#ct_btns {
@@ -332,7 +340,7 @@ const ctre = {
 
 			.send_selected,
 			.ct_btns_space,
-			#ctre_wnd .ct_close {
+			#mge_wnd .ct_close {
 				display: inline-block;
 				vertical-align: middle;
 			}
@@ -343,7 +351,7 @@ const ctre = {
 
 
 			.send_selected > button,
-			#ctre_wnd .ct_close > button {
+			#mge_wnd .ct_close > button {
 				text-align: center;
 				font-size: 21px;
 				width: 100px;
@@ -358,7 +366,7 @@ const ctre = {
 				background-color: #3498DB;
 
 			}
-			#ctre_wnd .ct_close > button {
+			#mge_wnd .ct_close > button {
 				background-color: #E67E22;
 			}
 
@@ -368,8 +376,8 @@ const ctre = {
 			`
 		];
 
-		for (let i in ctre.hiddenElements) {
-			let selector = ctre.hiddenElements[i].selector;
+		for (let i in mge.hiddenElements) {
+			let selector = mge.hiddenElements[i].selector;
 			if (selector == 'body' || selector == 'html') {
 
 				// отключает удаление элемента
@@ -380,11 +388,11 @@ const ctre = {
 			}
 		}
 
-		let styleElm = document.querySelector('#ctre_styles');
+		let styleElm = document.querySelector('#mge_styles');
 		if (!styleElm) {
 			styleElm = document.createElement('style');
 			styleElm.type = "text/css";
-			styleElm.id = "ctre_styles";
+			styleElm.id = "mge_styles";
 			document.head.appendChild(styleElm);
 		}
 
@@ -398,24 +406,24 @@ const ctre = {
 	},
 
 	updateElementList: function() {
-		if (!ctre.helpWindow) return;
+		if (!mge.helpWindow) return;
 
-		let elmList = document.querySelector('#ctre_elm_list');
-		let wind = document.querySelector('#ctre_wnd');
+		let elmList = document.querySelector('#mge_elm_list');
+		let wind = document.querySelector('#mge_wnd');
 
 		let line = "";
 
-		if (ctre.hiddenElements.length) {
+		if (mge.hiddenElements.length) {
 			// !!! одиночный вызов строки позиции элемента
 		
-			// alert(ctre.getPathHTML(ctre.markedElement));
-			line = ctre.getPathHTML(ctre.markedElement);
+			// alert(mge.getPathHTML(mge.markedElement));
+			line = mge.getPathHTML(mge.markedElement);
 
 			// lines.push('<table><tr class="ct_heading"><td>Removed element</td><td>Remember?</td><td></td></tr>');
 
 
 
-			// for (let elm of ctre.hiddenElements) {
+			// for (let elm of mge.hiddenElements) {
 			// 	lines.push(`<tr>
 			// 		<td class="ct_selector"><a href="" class="ct_edit_selector">edit</a>${escapeHTML(elm.selector)}</td>
 			// 		<td><input type="checkbox"${elm.permanent ? ' checked' : ''}></td>
@@ -437,25 +445,25 @@ const ctre = {
 
 		function onChangePermanent () {
 			var tr = closest(this, 'tr');
-			let index = ctre.hiddenElements.findIndex(elm => elm.selector == tr.selector);
-			var hiddenElement = ctre.hiddenElements[index];
+			let index = mge.hiddenElements.findIndex(elm => elm.selector == tr.selector);
+			var hiddenElement = mge.hiddenElements[index];
 			hiddenElement.permanent = this.checked;
 
-			// ctre.updateSavedElements();
+			// mge.updateSavedElements();
 		}
 
 		function onDelete (e) {
 			let tr = closest(this, 'tr');
 
 			if (tr.selector) {
-				let index = ctre.hiddenElements.findIndex(elm => elm.selector == tr.selector);
-			    ctre.hiddenElements.splice(index, 1);
+				let index = mge.hiddenElements.findIndex(elm => elm.selector == tr.selector);
+			    mge.hiddenElements.splice(index, 1);
 			}
 
-			ctre.updateCSS();
-			ctre.refreshOverlays();
-			ctre.updateElementList();
-			// ctre.updateSavedElements();
+			mge.updateCSS();
+			mge.refreshOverlays();
+			mge.updateElementList();
+			// mge.updateSavedElements();
 
 			e.preventDefault();
 			e.stopPropagation();
@@ -468,27 +476,27 @@ const ctre = {
 			let tr = closest(this, 'tr');
 
 			if (tr.selector) {
-				let hiddenElement = ctre.hiddenElements.find(elm => elm.selector == tr.selector);
+				let hiddenElement = mge.hiddenElements.find(elm => elm.selector == tr.selector);
 				let newSelector = prompt('Customize CSS selector\n\nhints:\n[id^="Abc"] matches #AbcWhatever\n[class*="Abc"] matches .somethingAbcSomething', hiddenElement.selector);
 				if (newSelector) {
 					hiddenElement.selector = newSelector;
 
-					ctre.updateCSS();
-					ctre.refreshOverlays();
-					ctre.updateElementList();
-					// ctre.updateSavedElements();
+					mge.updateCSS();
+					mge.refreshOverlays();
+					mge.updateElementList();
+					// mge.updateSavedElements();
 				}
 			}
 		}
 
 		let i = -1;
-		for (let tr of document.querySelectorAll('#ctre_elm_list table tr')) {
+		for (let tr of document.querySelectorAll('#mge_elm_list table tr')) {
 			if (i < 0) { // skip heading
 				i++;
 				continue;
 			}
 
-			tr.selector = ctre.hiddenElements[i].selector;
+			tr.selector = mge.hiddenElements[i].selector;
 
 			tr.querySelector('input').addEventListener('change', onChangePermanent, false);
 			tr.querySelector('a.ct_delete').addEventListener('click', onDelete, false);
@@ -504,7 +512,7 @@ const ctre = {
 		chrome.extension.sendMessage({
 			action: 'set_saved_elms',
 			website: location.hostname.replace(/^www\./, ''),
-			data: JSON.stringify(ctre.hiddenElements.filter(elm => elm.permanent)),
+			data: JSON.stringify(mge.hiddenElements.filter(elm => elm.permanent)),
 		});
 	},
 
@@ -515,23 +523,23 @@ const ctre = {
 			action: 'get_saved_elms',
 			website: location.hostname.replace(/^www\./, ''),
 		}, function (data) {
-			ctre.hiddenElements = JSON.parse(data);
+			mge.hiddenElements = JSON.parse(data);
 
-			ctre.updateCSS();
-			ctre.updateElementList();
+			mge.updateCSS();
+			mge.updateElementList();
 		});
 
 		chrome.extension.sendMessage({
 			action: 'get_settings',
 		}, function (data) {
-			ctre.settings = JSON.parse(data);
+			mge.settings = JSON.parse(data);
 		});
 	},
 
 	// updateSettings: function() {
 	// 	// эффект не заметен
 	// 	return;
-	// 	document.querySelector('#ctre_opt_remember').textContent = ctre.settings.remember ? 'yes' : 'no';
+	// 	document.querySelector('#mge_opt_remember').textContent = mge.settings.remember ? 'yes' : 'no';
 	// },
 
 	saveSettings: function() {
@@ -540,25 +548,25 @@ const ctre = {
 
 		chrome.extension.sendMessage({
 			action: 'set_settings',
-			data: JSON.stringify(ctre.settings),
+			data: JSON.stringify(mge.settings),
 		});
 	},
 	
 	activate: function() {
-		if (!ctre.helpWindow) ctre.updateCSS();
+		if (!mge.helpWindow) mge.updateCSS();
 
 		let div = document.createElement('div');
-		div.setAttribute("id", "ctre_wnd");
+		div.setAttribute("id", "mge_wnd");
 		document.body.appendChild(div);
 		div.innerHTML = `
 			<span class="ct_logo">Select area to track.</span>
-			<div id="ctre_current_elm">Select an element with the mouse</div>
+			<div id="mge_current_elm">Select an element with the mouse</div>
 			<div class="keys">
 				<div class="transposeKeys">
 					<span class="key">Q</span>/<span class="key">W</span>: move up or down one level
 				</div>
 			</div>
-			<div id="ctre_elm_list"></div>
+			<div id="mge_elm_list"></div>
 			<div id="ct_btns">
 				<div class="send_selected"><button>✔️</button></div>
 				<div class="ct_btns_space"></div>
@@ -568,15 +576,19 @@ const ctre = {
 		`;
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			var block = encodeURIComponent(ctre.getPathHTML(ctre.markedElement));
-			var url = document.location.href;
-			var line = "http://manga.garden/add_title?url=" + url + "&block=" + block
-			alert(line)
-			window.location = line
+			// e.preventDefault();
+			// e.stopPropagation();
+			// var path_html = encodeURIComponent(mge.getPathHTML(mge.markedElement));
+			var path_html = mge.getPathHTML(mge.selectedElement);
+			var url = encodeURIComponent(document.location.href);
+			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
+			alert(line);
+			window.location = line;
+			e.preventDefault();
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
-			ctre.deactivate();
+			mge.deactivate();
 			e.preventDefault();
 		});
 
@@ -585,68 +597,68 @@ const ctre = {
 		// 	e.preventDefault();
 		// });
 
-		// div.querySelector('#ctre_opt_remember').addEventListener('click', function (e) {
-		// 	ctre.settings.remember = this.textContent == 'no';
-		// 	ctre.saveSettings();
-		// 	ctre.updateSettings();
+		// div.querySelector('#mge_opt_remember').addEventListener('click', function (e) {
+		// 	mge.settings.remember = this.textContent == 'no';
+		// 	mge.saveSettings();
+		// 	mge.updateSettings();
 		// 	e.preventDefault();
 		// });
 
 		for (let elm of div.querySelectorAll('.ct_more a')) {
 			elm.addEventListener('click', function (e) {
 
-				ctre.deactivate();
+				mge.deactivate();
 			});
 		}
 		
-		ctre.helpWindow = div;
+		mge.helpWindow = div;
 
-		ctre.updateElementList();
-		// ctre.updateSettings();
+		mge.updateElementList();
+		// mge.updateSettings();
 		
-		ctre.targetingMode = true;
-		document.addEventListener('mouseover', ctre.mouseover, true);
-		document.addEventListener('mousemove', ctre.mousemove);
-		document.addEventListener('mousedown', ctre.hideTarget, true);
-		document.addEventListener('mouseup', ctre.preventEvent, true);
-		document.addEventListener('click', ctre.preventEvent, true);
+		mge.targetingMode = true;
+		document.addEventListener('mouseover', mge.mouseover, true);
+		document.addEventListener('mousemove', mge.mousemove);
+		document.addEventListener('mousedown', mge.hideTarget, true);
+		document.addEventListener('mouseup', mge.preventEvent, true);
+		document.addEventListener('click', mge.preventEvent, true);
 		
-		// ctre.helpWindow.style.display = "block";
+		// mge.helpWindow.style.display = "block";
 		
-		ctre.addOverlays();
+		mge.addOverlays();
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
 
 		setTimeout(function () {
-			let logoElm = document.querySelector('#ctre_wnd .logo');
+			let logoElm = document.querySelector('#mge_wnd .logo');
 			logoElm && logoElm.classList.add('anim');
 		}, 10);
 	},
 	
 	deactivate: function() {
-		ctre.targetingMode = false;
+		mge.targetingMode = false;
 		
-		if (ctre.markedElement) {
-			ctre.removeHighlightStyle(ctre.markedElement);
+		if (mge.markedElement) {
+			mge.removeHighlightStyle(mge.markedElement);
 		}
-		ctre.markedElement = false;
+		mge.markedElement = false;
 		
-		ctre.helpWindow.parentNode.removeChild(ctre.helpWindow);
+		mge.helpWindow.parentNode.removeChild(mge.helpWindow);
 		
-		document.removeEventListener('mouseover', ctre.mouseover, true);
-		document.removeEventListener('mousemove', ctre.mousemove);
-		document.removeEventListener('mousedown', ctre.hideTarget, true);
-		document.removeEventListener('mouseup', ctre.preventEvent, true);
-		document.removeEventListener('click', ctre.preventEvent, true);
+		document.removeEventListener('mouseover', mge.mouseover, true);
+		document.removeEventListener('mousemove', mge.mousemove);
+		document.removeEventListener('mousedown', mge.hideTarget, true);
+		document.removeEventListener('mouseup', mge.preventEvent, true);
+		document.removeEventListener('click', mge.preventEvent, true);
 		
-		ctre.removeOverlays();
+		mge.removeOverlays();
 		
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
 	toggle: function() {
-		if (ctre.targetingMode) ctre.deactivate();
-		else ctre.activate();
+		if (mge.targetingMode) mge.deactivate();
+		else mge.activate();
 	},
 	
 	addOverlays: function() {
@@ -659,7 +671,7 @@ const ctre = {
 			let rect = e.getBoundingClientRect();
 
 			let new_node = document.createElement("div");
-			new_node.className="ctre_overlay";
+			new_node.className="mge_overlay";
 			//new_node.innerHTML = html;
 			new_node.style.position = "absolute";
 			new_node.style.left = rect.left +  window.scrollX + "px";
@@ -667,7 +679,7 @@ const ctre = {
 			new_node.style.width = rect.width + "px";
 			new_node.style.height = rect.height + "px";
 			new_node.style.background = "rgba(255,128,128,0.2)";
-			new_node.style.zIndex = ctre.maxZIndex - 2;
+			new_node.style.zIndex = mge.maxZIndex - 2;
 			new_node.relatedElement = e;
 			
 			document.body.appendChild(new_node);
@@ -675,7 +687,7 @@ const ctre = {
 	},
 	
 	removeOverlays: function() {
-		let elms = document.querySelectorAll(".ctre_overlay");
+		let elms = document.querySelectorAll(".mge_overlay");
 		for (i = 0; i < elms.length; i++) {
 			let e = elms[i];
 			e.parentNode.removeChild(e);
@@ -683,29 +695,29 @@ const ctre = {
 	},
 
 	refreshOverlays: function () {
-		ctre.removeOverlays();
-		ctre.addOverlays();
+		mge.removeOverlays();
+		mge.addOverlays();
 	},
 	
 	init: function() {
-		document.addEventListener('keydown', ctre.keyDown);
-		document.addEventListener('keyup', ctre.keyUp);
+		document.addEventListener('keydown', mge.keyDown);
+		document.addEventListener('keyup', mge.keyUp);
 		
 		chrome.extension.onMessage.addListener(function(msg, sender, responseFun) {
 			if (msg.action == "toggle") {
-				ctre.toggle();
+				mge.toggle();
 				responseFun(2.0);
 			}
 			else if (msg.action == "getStatus") {
-				responseFun(ctre.targetingMode);
+				responseFun(mge.targetingMode);
 			}
 		});
 
-		ctre.loadSavedElements();
+		mge.loadSavedElements();
 	}
 }
 
-ctre.init();
+mge.init();
 
 function closest(el, selector) {
 	var retval = null;
@@ -721,7 +733,7 @@ function closest(el, selector) {
 
 function escapeHTML(str) {
 	// return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-	// alert(ctre.getPathHTML(ctre.markedElement));
+	// alert(mge.getPathHTML(mge.markedElement));
 	return;
 }
 
