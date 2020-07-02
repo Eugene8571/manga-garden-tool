@@ -3,6 +3,7 @@
 const mge = {
 	hoveredElement: false,
 	markedElement: false,
+	clickedElement: false,
 	selectedElement: false,
 	targetingMode: false,
 	transpose: 0, // how far to travel up the line of ancestors
@@ -34,6 +35,35 @@ const mge = {
 			mge.markedElement = mge.markedElement.relatedElement;
 		}
 		// возможное место для условия
+		// let i = 0;
+		// for (i = 0; i < mge.transpose; i++) {
+		// 	if (mge.markedElement.parentNode != window.document) {
+		// 		mge.markedElement = mge.markedElement.parentNode;
+		// 	} else {
+		// 		break;
+		// 	}
+		// }
+		
+		// mge.transpose = i;
+		mge.addHighlightStyle(mge.markedElement);
+
+		// alert(mge.getPathHTML(mge.hoveredElement, mge.transpose));
+		// document.querySelector('#mge_current_elm').innerHTML = mge.getPathHTML(mge.hoveredElement, mge.transpose);
+		// document.querySelector('#mge_current_elm').scrollTop = 9999;
+		// сюда
+	},
+
+	highlightSelected: function() {
+		if (!mge.clickedElement) return;
+		
+		if (mge.markedElement) {
+			mge.removeHighlightStyle(mge.markedElement);
+		}
+
+		mge.markedElement = mge.clickedElement;
+		if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
+			mge.markedElement = mge.markedElement.relatedElement;
+		}
 		let i = 0;
 		for (i = 0; i < mge.transpose; i++) {
 			if (mge.markedElement.parentNode != window.document) {
@@ -44,13 +74,15 @@ const mge = {
 		}
 		
 		mge.transpose = i;
-		mge.addHighlightStyle(mge.markedElement);
+		mge.selectedElement = mge.markedElement
+		mge.addHighlightStyle(mge.selectedElement);
 
 		// alert(mge.getPathHTML(mge.hoveredElement, mge.transpose));
-		document.querySelector('#mge_current_elm').innerHTML = mge.getPathHTML(mge.hoveredElement, mge.transpose);
-		document.querySelector('#mge_current_elm').scrollTop = 9999;
+		document.querySelector('#mge_selected_elm').innerHTML = mge.getPathHTML(mge.markedElement, mge.transpose);
+		document.querySelector('#mge_selected_elm').scrollTop = 9999;
 		// сюда
 	},
+
 
 	addHighlightStyle: function (elm) {
 		if (mge.selectedElement) {
@@ -98,7 +130,7 @@ const mge = {
 			return false;
 		}*/
 
-		if (!mge.targetingMode) return;
+		if (!mge.clickedElement) return;
 		
 		if (e.keyCode == 27) {
 			mge.deactivate();
@@ -106,10 +138,10 @@ const mge = {
 		
 		if (e.keyCode == 87) { // w
 			if (mge.transpose > 0) mge.transpose--;
-			mge.highlightElement();
+			mge.highlightSelected();
 		} else if (e.keyCode == 81) { // q
 			mge.transpose++;
-			mge.highlightElement();
+			mge.highlightSelected();
 		}
 
 		e.stopPropagation(); e.preventDefault();
@@ -117,7 +149,7 @@ const mge = {
 	},
 	
 	keyUp: function(e) {
-		if (!mge.targetingMode) return;
+		if (!mge.clickedElement) return;
 
 		e.stopPropagation(); e.preventDefault();
 		return false;
@@ -130,8 +162,15 @@ const mge = {
 
 		if (!selector) return;
 		// присвоение 
-		if (!mge.selectedElement) {
+		if (!mge.clickedElement) {
+		mge.clickedElement = mge.markedElement;
 		mge.selectedElement = mge.markedElement;}
+
+		document.removeEventListener('mouseover', mge.mouseover, true);
+		document.removeEventListener('mousemove', mge.mousemove);
+		document.removeEventListener('mousedown', mge.hideTarget, true);
+		document.removeEventListener('mouseup', mge.preventEvent, true);
+		document.removeEventListener('click', mge.preventEvent, true);
 
 		mge.hiddenElements.push({
 			selector,
@@ -289,7 +328,7 @@ const mge = {
 			#mge_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
 			#mge_current_elm .pathNode.active { border-bottom: solid 2px #555; }
 
-			#mge_elm_list { 
+			#mge_selected_elm { 
 				// display: none; 
 				margin-top: 5px; 
 				background: #f7f7f7; 
@@ -298,25 +337,25 @@ const mge = {
 				height: 90px; 
 				overflow: hidden; 
 			}
-			// #mge_elm_list.hasContent { display: block; }
+			// #mge_selected_elm.hasContent { display: block; }
 			#mge_wnd.hasContent { display: inline-block; }
-			#mge_elm_list table { border: 0; width: 100%; border-spacing: 0; }
-			#mge_elm_list tr { border: 0; }
-			#mge_elm_list tr.ct_heading td { color: #bbb; }
-			#mge_elm_list td { padding: 0; border: 0; background: #f7f7f7; }
-			#mge_elm_list tr:nth-child(even) td { background: #fcfcfc; }
-			#mge_elm_list td:nth-child(1) { padding-left: 20px; }
-			#mge_elm_list td:nth-child(2) { text-align: center; }
-			#mge_elm_list td:nth-child(3) { padding-right: 20px; }
-			#mge_elm_list tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
-			#mge_elm_list td input { display: inline; -webkit-appearance: checkbox; }
-			#mge_elm_list td input:before, 
-			#mge_elm_list td input:after { content: none; }
-			#mge_elm_list .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
-			#mge_elm_list .ct_edit_selector:hover { color: #000; }
-			#mge_elm_list tr:hover .ct_edit_selector { opacity: 1; }
-			#mge_elm_list a.ct_delete { color: #f00; padding: 4px; text-decoration: none; font-size: 14px; }
-			#mge_elm_list a.ct_delete:hover { color: #fff; background: #f00; }
+			#mge_selected_elm table { border: 0; width: 100%; border-spacing: 0; }
+			#mge_selected_elm tr { border: 0; }
+			#mge_selected_elm tr.ct_heading td { color: #bbb; }
+			#mge_selected_elm td { padding: 0; border: 0; background: #f7f7f7; }
+			#mge_selected_elm tr:nth-child(even) td { background: #fcfcfc; }
+			#mge_selected_elm td:nth-child(1) { padding-left: 20px; }
+			#mge_selected_elm td:nth-child(2) { text-align: center; }
+			#mge_selected_elm td:nth-child(3) { padding-right: 20px; }
+			#mge_selected_elm tr:not(.ct_heading) td:nth-child(1) { font-family: monospace; font-size: 11px; }
+			#mge_selected_elm td input { display: inline; -webkit-appearance: checkbox; }
+			#mge_selected_elm td input:before, 
+			#mge_selected_elm td input:after { content: none; }
+			#mge_selected_elm .ct_edit_selector { font-family: sans-serif; float: right; opacity: 0; color: #0fb4d4; text-decoration: none; }
+			#mge_selected_elm .ct_edit_selector:hover { color: #000; }
+			#mge_selected_elm tr:hover .ct_edit_selector { opacity: 1; }
+			#mge_selected_elm a.ct_delete { color: #f00; padding: 4px; text-decoration: none; font-size: 14px; }
+			#mge_selected_elm a.ct_delete:hover { color: #fff; background: #f00; }
 
 			#mge_wnd .ct_more { border-top: solid 1px #f7f7f7; margin: 0 -20px; padding-top: 12px; color: #bbb; font-size: 10px; text-align: center; }
 			#mge_wnd .ct_more a { color: #0fb4d4; font-size: inherit; text-decoration: none; transition: color 0.5s; }
@@ -410,7 +449,7 @@ const mge = {
 	updateElementList: function() {
 		if (!mge.helpWindow) return;
 
-		let elmList = document.querySelector('#mge_elm_list');
+		let elmList = document.querySelector('#mge_selected_elm');
 		let wind = document.querySelector('#mge_wnd');
 
 		let line = "";
@@ -492,7 +531,7 @@ const mge = {
 		}
 
 		let i = -1;
-		for (let tr of document.querySelectorAll('#mge_elm_list table tr')) {
+		for (let tr of document.querySelectorAll('#mge_selected_elm table tr')) {
 			if (i < 0) { // skip heading
 				i++;
 				continue;
@@ -575,7 +614,7 @@ const mge = {
 		div.innerHTML = `
 			<span class="ct_logo">Place of Interest.</span>
 
-			<div id="mge_elm_list"></div>
+			<div id="mge_selected_elm"></div>
 			<div id="ct_btns">
 				<div class="send_selected"><button>✔️</button></div>
 				<div class="ct_btns_space"></div>
@@ -656,6 +695,10 @@ const mge = {
 			mge.removeHighlightStyle(mge.selectedElement);
 		}
 		mge.selectedElement = false;
+		if (mge.clickedElement) {
+			mge.removeHighlightStyle(mge.clickedElement);
+		}
+		mge.clickedElement = false;
 
 		mge.helpWindow.parentNode.removeChild(mge.helpWindow);
 		
