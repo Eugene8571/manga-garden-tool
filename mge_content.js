@@ -147,10 +147,16 @@ const mge = {
 	},
 	
 	select_Target: function(e) {
-		// alert('123')
 		if (RMB_TARGET) {
 			mge.clickedElement = RMB_TARGET;
 			mge.selectedElement = RMB_TARGET;
+			mge.markedElement = RMB_TARGET;
+
+			if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
+				mge.markedElement = mge.markedElement.relatedElement;
+			}
+
+			mge.addHighlightStyle(mge.markedElement);
 
 			document.removeEventListener('mouseover', mge.mouseover, true);
 			document.removeEventListener('mousemove', mge.mousemove);
@@ -174,6 +180,11 @@ const mge = {
 
 			alert('act')
 		}
+
+		// дальше не используется.
+
+
+
 		if (mge.isChildOfmgeWindow(e.target)) return;
 		alert('234')
 		let selector = mge.getSelector(mge.markedElement);
