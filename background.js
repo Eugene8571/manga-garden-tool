@@ -14,16 +14,7 @@ function checkActive() {
 		if (!tab || tab.id < 0) return; // not really a tab, most likely a devtools window
 
 		chrome.browserAction.enable(tab.id);
-		// alert(window.location.host)
 
-		// if (window.location.href.substr(0,4) != 'http') {
-		// 	chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
-		// 	chrome.browserAction.setTitle( { title: 'Click to remove element [unavailable for this tab]' });
-		// 	chrome.browserAction.disable(tab.id);
-		// 	return;
-		// } else {
-		// 	chrome.browserAction.enable(tab.id);
-		// }
 		
 		chrome.tabs.sendMessage(tab.id, { action: 'getStatus' }, function(isActive) {
 			if (chrome.runtime.lastError) return;
@@ -36,27 +27,6 @@ function checkActive() {
 		});
 	});
 }
-
-
-// chrome.browserAction.onClicked.addListener(function() {
-
-// document.getElementById('picker_btn').addEventListener('click', function() {
-
-// 	chrome.tabs.getSelected(null, function(tab) {
-// 		chrome.tabs.sendMessage(tab.id, { 'action': 'toggle' }, function(response) {
-// 			if (chrome.runtime.lastError) {
-// 				// lastError needs to be checked, otherwise Chrome may throw an error
-// 			}
-
-// 			if (!response) {
-// 				chrome.tabs.executeScript(tab.id, {
-// 					// code: "if (confirm('This tab was loaded before Manga.garden Extension was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
-// 					code: "location.reload();"
-// 				});
-// 			}
-// 		});
-// 	});
-// });
 
 
 chrome.contextMenus.create({
