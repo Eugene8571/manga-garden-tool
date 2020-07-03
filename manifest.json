@@ -16,6 +16,11 @@
 		"default_popup": "popup.html"
 
 	},
+
+	"background": {
+   		"scripts": ["background.js"]
+	},
+
 	"content_scripts": [ {
 		"all_frames": false,
 		"js": [ "mge_content.js" ],
@@ -25,6 +30,7 @@
 		"run_at": "document_end"
 	} ],
 	"permissions": [
+	    "contextMenus",
 		"activeTab" 
 	],
 	"incognito": "spanning"
