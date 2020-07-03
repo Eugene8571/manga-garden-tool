@@ -13,14 +13,17 @@ function checkActive() {
 	chrome.tabs.getSelected(null, function(tab) {
 		if (!tab || tab.id < 0) return; // not really a tab, most likely a devtools window
 
-		if (tab.url.substr(0,4) != 'http') {
-			chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
-			chrome.browserAction.setTitle( { title: 'Click to remove element [unavailable for this tab]' });
-			chrome.browserAction.disable(tab.id);
-			return;
-		} else {
-			chrome.browserAction.enable(tab.id);
-		}
+		chrome.browserAction.enable(tab.id);
+		// alert(window.location.host)
+
+		// if (window.location.href.substr(0,4) != 'http') {
+		// 	chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
+		// 	chrome.browserAction.setTitle( { title: 'Click to remove element [unavailable for this tab]' });
+		// 	chrome.browserAction.disable(tab.id);
+		// 	return;
+		// } else {
+		// 	chrome.browserAction.enable(tab.id);
+		// }
 		
 		chrome.tabs.sendMessage(tab.id, { action: 'getStatus' }, function(isActive) {
 			if (chrome.runtime.lastError) return;
