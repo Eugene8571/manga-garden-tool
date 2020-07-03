@@ -37,10 +37,31 @@ function checkActive() {
 
 // chrome.browserAction.onClicked.addListener(function() {
 
-document.getElementById('picker_btn').addEventListener('click', function() {
+// document.getElementById('picker_btn').addEventListener('click', function() {
 
+// 	chrome.tabs.getSelected(null, function(tab) {
+// 		chrome.tabs.sendMessage(tab.id, { 'action': 'toggle' }, function(response) {
+// 			if (chrome.runtime.lastError) {
+// 				// lastError needs to be checked, otherwise Chrome may throw an error
+// 			}
+
+// 			if (!response) {
+// 				chrome.tabs.executeScript(tab.id, {
+// 					// code: "if (confirm('This tab was loaded before Manga.garden Extension was installed. Would you like to reload it?\\nThis is necessary only the first time.')) location.reload();"
+// 					code: "location.reload();"
+// 				});
+// 			}
+// 		});
+// 	});
+// });
+
+
+chrome.contextMenus.create({
+  contexts: ['all'],
+  title: 'manga.garden',
+  onclick: function(info, tab) {
 	chrome.tabs.getSelected(null, function(tab) {
-		chrome.tabs.sendMessage(tab.id, { 'action': 'toggle' }, function(response) {
+		chrome.tabs.sendMessage(tab.id, { 'action': 'rmb_event' }, function(response) {
 			if (chrome.runtime.lastError) {
 				// lastError needs to be checked, otherwise Chrome may throw an error
 			}
@@ -53,7 +74,9 @@ document.getElementById('picker_btn').addEventListener('click', function() {
 			}
 		});
 	});
+  }
 });
+
 
 chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
 	if (msg.action == 'status' && msg.active == true) {
@@ -82,3 +105,5 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 });
 
 checkActive();
+
+
