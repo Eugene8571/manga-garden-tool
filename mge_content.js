@@ -178,7 +178,6 @@ const mge = {
 			e.stopPropagation();
 			return false;
 
-			alert('act')
 		}
 
 		// дальше не используется.
@@ -186,7 +185,6 @@ const mge = {
 
 
 		if (mge.isChildOfmgeWindow(e.target)) return;
-		alert('234')
 		let selector = mge.getSelector(mge.markedElement);
 
 		if (!selector) return;
@@ -613,7 +611,7 @@ const mge = {
 			var path_html = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
 			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
-			alert(line);
+			// alert(line);
 			window.location = line;
 			e.preventDefault();
 		});
