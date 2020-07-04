@@ -28,6 +28,8 @@
 		"run_at": "document_end"
 	} ],
 	"permissions": [
-	    "contextMenus"
+	    "contextMenus",
+	    "http://*/*", 
+		"https://*/*"
 	]
 }
