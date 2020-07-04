@@ -1,11 +1,11 @@
 {
   "extensionName": {
-    "message": "Add page",
+    "message": "Manga.garden tool",
     "description": "Name of the extension."
   },
 
   "extensionDescription": {
-    "message": "Send current page URL to your Manga Checklist.",
+    "message": "Send object of interest to your checklist. Updates will be checked automatically. Use right mouse button.",
     "description": "Description of the extension."
   }
 }

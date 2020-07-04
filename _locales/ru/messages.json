@@ -1,11 +1,11 @@
 {
   "extensionName": {
-    "message": "Добавить",
+    "message": "Manga.garden tool",
     "description": "Name of the extension."
   },
 
   "extensionDescription": {
-    "message": "Добавить страницу в список отслеживания.",
+    "message": "Для добавление обьекта интереса в список отслеживания обновлений.",
     "description": "Description of the extension."
   }
 }
