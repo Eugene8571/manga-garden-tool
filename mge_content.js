@@ -334,7 +334,8 @@ const mge = {
 				border: solid 12px #f7f7f7; 
 				border-width: 12px 0 12px 0; 
 				height: 84px; 
-				overflow: hidden; 
+				overflow: hidden;
+				color: black; 
 			}
 
 			.longer,
