@@ -610,7 +610,8 @@ const mge = {
 			// var path_html = encodeURIComponent(mge.getPathHTML(mge.markedElement));
 			var path_html = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
-			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
+			// var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
+			var line = "http://manga.garden/add_title?url=" + url + "&path_html=" + path_html;
 			// alert(line);
 			window.location = line;
 			e.preventDefault();
