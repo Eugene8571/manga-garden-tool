@@ -69,6 +69,8 @@ const mge = {
 
 		document.querySelector('#mge_selected_elm').innerHTML = mge.getPathHTML(mge.markedElement, mge.transpose);
 		document.querySelector('#mge_selected_elm').scrollTop = 9999;
+		document.querySelector('#mge_clicked_elm').innerHTML = mge.getPathHTML(mge.clickedElement, mge.transpose);
+		document.querySelector('#mge_clicked_elm').scrollTop = 9999;
 		// сюда
 	},
 
@@ -134,14 +136,16 @@ const mge = {
 			mge.highlightSelected();
 		}
 
-		e.stopPropagation(); e.preventDefault();
+		// e.stopPropagation(); 
+		// e.preventDefault();
 		return false;
 	},
 	
 	keyUp: function(e) {
 		if (!mge.clickedElement) return;
 
-		e.stopPropagation(); e.preventDefault();
+		// e.stopPropagation(); 
+		// e.preventDefault();
 		return false;
 	},
 	
@@ -171,10 +175,10 @@ const mge = {
 			mge.updateCSS();
 			mge.updateElementList();
 			mge.triggerResize();
-			mge.refreshOverlays();
+			// mge.refreshOverlays();
 
-			e.preventDefault();
-			e.stopPropagation();
+			// e.preventDefault();
+			// e.stopPropagation();
 			return false;
 
 		}
@@ -261,8 +265,8 @@ const mge = {
 	preventEvent: function(e) {
 		if (mge.isChildOfmgeWindow(e.target)) return;
 
-		e.preventDefault();
-		e.stopPropagation();
+		// e.preventDefault();
+		// e.stopPropagation();
 		return false;
 	},
 	
@@ -324,6 +328,7 @@ const mge = {
 			#mge_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
 			#mge_current_elm .pathNode.active { border-bottom: solid 2px #555; }
 
+			#mge_clicked_elm,
 			#mge_selected_elm { 
 				// display: none; 
 				margin-top: 5px; 
@@ -440,7 +445,7 @@ const mge = {
 	updateElementList: function() {
 		if (!mge.helpWindow) return;
 
-		let elmList = document.querySelector('#mge_selected_elm');
+		let elmList_selected = document.querySelector('#mge_selected_elm');
 		let wind = document.querySelector('#mge_wnd');
 
 		let line = "";
@@ -450,15 +455,15 @@ const mge = {
 			line = mge.getPathHTML(mge.selectedElement);
 
 
-			elmList.classList.add('hasContent');
+			elmList_selected.classList.add('hasContent');
 			wind.classList.add('hasContent');
 
 		} else {
-			elmList.classList.remove('hasContent');
+			elmList_selected.classList.remove('hasContent');
 			wind.classList.remove('hasContent');
 		}
 		
-		elmList.innerHTML = line
+		elmList_selected.innerHTML = line
 
 		// function onChangePermanent () {
 		// 	var tr = closest(this, 'tr');
@@ -577,7 +582,7 @@ const mge = {
 
 		div.innerHTML = `
 			<span class="ct_logo">Place of Interest.</span>
-
+			<div id="mge_clicked_elm"></div>
 			<div id="mge_selected_elm"></div>
 
 			<div>
@@ -608,13 +613,13 @@ const mge = {
 			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
 			// var line = "http://manga.garden/add_title?url=" + url + "&path_html=" + path_html;
 			window.location = line;
-			e.preventDefault();
-			e.stopPropagation();
+			// e.preventDefault();
+			// e.stopPropagation();
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
 			mge.deactivate();
-			e.preventDefault();
+			// e.preventDefault();
 		});
 
 		for (let elm of div.querySelectorAll('.ct_more a')) {
