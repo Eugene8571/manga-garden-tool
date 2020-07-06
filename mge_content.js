@@ -46,7 +46,7 @@ const mge = {
 	highlightSelected: function() {
 		if (!mge.clickedElement) return;
 		
-		if (mge.markedElement) {
+		if (mge.markedElement && (mge.markedElement != mge.clickedElement)) {
 			mge.removeHighlightStyle(mge.markedElement);
 		}
 
@@ -69,9 +69,6 @@ const mge = {
 
 		document.querySelector('#mge_selected_elm').innerHTML = mge.getPathHTML(mge.markedElement, mge.transpose);
 		document.querySelector('#mge_selected_elm').scrollTop = 9999;
-		document.querySelector('#mge_clicked_elm').innerHTML = mge.getPathHTML(mge.clickedElement, mge.transpose);
-		document.querySelector('#mge_clicked_elm').scrollTop = 9999;
-		// сюда
 	},
 
 
@@ -463,7 +460,8 @@ const mge = {
 			wind.classList.remove('hasContent');
 		}
 		
-		elmList_selected.innerHTML = line
+		elmList_selected.innerHTML = line;
+		document.querySelector('#mge_clicked_elm').innerHTML = mge.getPathHTML(mge.clickedElement);
 
 		// function onChangePermanent () {
 		// 	var tr = closest(this, 'tr');
