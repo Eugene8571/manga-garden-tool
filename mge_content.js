@@ -22,9 +22,9 @@ const mge = {
 		evt.initUIEvent('resize', true, false,window,0);
 		window.dispatchEvent(evt);
 
-		setTimeout(function() { // also update overlays
-			mge.refreshOverlays();
-		});
+		// setTimeout(function() { // also update overlays
+		// 	// mge.refreshOverlays();
+		// });
 	},
 	
 	highlightElement: function() {
@@ -149,7 +149,7 @@ const mge = {
 		if (RMB_TARGET) {
 			mge.clickedElement = RMB_TARGET;
 			mge.selectedElement = RMB_TARGET;
-			mge.markedElement = RMB_TARGET;
+			// mge.markedElement = RMB_TARGET;
 
 			if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
 				mge.markedElement = mge.markedElement.relatedElement;
@@ -635,14 +635,14 @@ const mge = {
 		document.addEventListener('mouseup', mge.preventEvent, true);
 		document.addEventListener('click', mge.preventEvent, true);
 		
-		mge.addOverlays();
+		// mge.addOverlays();
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
 
-		setTimeout(function () {
-			let logoElm = document.querySelector('#mge_wnd .logo');
-			logoElm && logoElm.classList.add('anim');
-		}, 10);
+		// setTimeout(function () {
+		// 	let logoElm = document.querySelector('#mge_wnd .logo');
+		// 	logoElm && logoElm.classList.add('anim');
+		// }, 10);
 	},
 	
 	deactivate: function() {
@@ -662,6 +662,8 @@ const mge = {
 		}
 		mge.clickedElement = false;
 
+		// RMB_TARGET = null;
+
 		mge.helpWindow.parentNode.removeChild(mge.helpWindow);
 		
 		document.removeEventListener('mouseover', mge.mouseover, true);
@@ -670,53 +672,53 @@ const mge = {
 		document.removeEventListener('mouseup', mge.preventEvent, true);
 		document.removeEventListener('click', mge.preventEvent, true);
 		
-		mge.removeOverlays();
+		// mge.removeOverlays();
 		
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
 	toggle: function() {
-		if (mge.targetingMode) mge.deactivate();
+		if (mge.clickedElement) mge.deactivate();
 		else mge.activate();
 	},
 	
-	addOverlays: function() {
-		// add overlay over each iframe / embed
-		// this is needed for capturing mouseMove over the whole document
-		let elms = document.querySelectorAll("iframe, embed");
+	// addOverlays: function() {
+	// 	// add overlay over each iframe / embed
+	// 	// this is needed for capturing mouseMove over the whole document
+	// 	let elms = document.querySelectorAll("iframe, embed");
 
-		for (i = 0; i < elms.length; i++) {
-			let e = elms[i];
-			let rect = e.getBoundingClientRect();
+	// 	for (i = 0; i < elms.length; i++) {
+	// 		let e = elms[i];
+	// 		let rect = e.getBoundingClientRect();
 
-			let new_node = document.createElement("div");
-			new_node.className="mge_overlay";
-			//new_node.innerHTML = html;
-			new_node.style.position = "absolute";
-			new_node.style.left = rect.left +  window.scrollX + "px";
-			new_node.style.top = rect.top + window.scrollY + "px";
-			new_node.style.width = rect.width + "px";
-			new_node.style.height = rect.height + "px";
-			new_node.style.background = "rgba(255,128,128,0.2)";
-			new_node.style.zIndex = mge.maxZIndex - 2;
-			new_node.relatedElement = e;
+	// 		let new_node = document.createElement("div");
+	// 		new_node.className="mge_overlay";
+	// 		//new_node.innerHTML = html;
+	// 		new_node.style.position = "absolute";
+	// 		new_node.style.left = rect.left +  window.scrollX + "px";
+	// 		new_node.style.top = rect.top + window.scrollY + "px";
+	// 		new_node.style.width = rect.width + "px";
+	// 		new_node.style.height = rect.height + "px";
+	// 		new_node.style.background = "rgba(255,128,128,0.2)";
+	// 		new_node.style.zIndex = mge.maxZIndex - 2;
+	// 		new_node.relatedElement = e;
 			
-			document.body.appendChild(new_node);
-		};
-	},
+	// 		document.body.appendChild(new_node);
+	// 	};
+	// },
 	
-	removeOverlays: function() {
-		let elms = document.querySelectorAll(".mge_overlay");
-		for (i = 0; i < elms.length; i++) {
-			let e = elms[i];
-			e.parentNode.removeChild(e);
-		};
-	},
+	// removeOverlays: function() {
+	// 	let elms = document.querySelectorAll(".mge_overlay");
+	// 	for (i = 0; i < elms.length; i++) {
+	// 		let e = elms[i];
+	// 		e.parentNode.removeChild(e);
+	// 	};
+	// },
 
-	refreshOverlays: function () {
-		mge.removeOverlays();
-		mge.addOverlays();
-	},
+	// refreshOverlays: function () {
+	// 	mge.removeOverlays();
+	// 	mge.addOverlays();
+	// },
 	
 	init: function() {
 		document.addEventListener('keydown', mge.keyDown);
@@ -732,7 +734,13 @@ const mge = {
 			}
 
 			if (msg.action == "rmb_event") {
-				mge.toggle();
+				if (mge.clickedElement) {
+					mge.deactivate();
+					mge.activate(); 
+				} else {
+					mge.activate(); 
+				}
+				// mge.toggle();
 				responseFun(2.0);
 				mge.select_Target(RMB_TARGET)
 				// alert( RMB_TARGET)
