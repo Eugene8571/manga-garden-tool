@@ -5,7 +5,7 @@ document.addEventListener('contextmenu', function (event) {
 });
 
 const mge = {
-	hoveredElement: false,
+	// hoveredElement: false,
 	markedElement: false,
 	clickedElement: false,
 	selectedElement: false,
@@ -27,21 +27,21 @@ const mge = {
 		// });
 	},
 	
-	highlightElement: function() {
-		if (!mge.hoveredElement) return;
+	// highlightElement: function() {
+	// 	if (!mge.hoveredElement) return;
 		
-		if (mge.markedElement) {
-			mge.removeHighlightStyle(mge.markedElement);
-		}
+	// 	if (mge.markedElement) {
+	// 		mge.removeHighlightStyle(mge.markedElement);
+	// 	}
 
-		mge.markedElement = mge.hoveredElement;
-		if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
-			mge.markedElement = mge.markedElement.relatedElement;
-		}
+	// 	mge.markedElement = mge.hoveredElement;
+	// 	if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
+	// 		mge.markedElement = mge.markedElement.relatedElement;
+	// 	}
 
-		mge.addHighlightStyle(mge.markedElement);
+	// 	mge.addHighlightStyle(mge.markedElement);
 
-	},
+	// },
 
 	highlightSelected: function() {
 		if (!mge.clickedElement) return;
@@ -86,36 +86,36 @@ const mge = {
 		elm.style.outlineOffset = '';
 	},
 	
-	context_activation: function(e) {
-		if (mge.isChildOfmgeWindow(e.target)) return;
+	// context_activation: function(e) {
+	// 	if (mge.isChildOfmgeWindow(e.target)) return;
 		
-		if (mge.hoveredElement != e.target) {
-			mge.transpose = 0;
-			mge.hoveredElement = e.target;
-			mge.highlightElement();
-		}
-	},
+	// 	if (mge.hoveredElement != e.target) {
+	// 		mge.transpose = 0;
+	// 		mge.hoveredElement = e.target;
+	// 		mge.highlightElement();
+	// 	}
+	// },
 
 
-	mouseover: function(e) {
-		if (mge.isChildOfmgeWindow(e.target)) return;
+	// mouseover: function(e) {
+	// 	if (mge.isChildOfmgeWindow(e.target)) return;
 		
-		if (mge.hoveredElement != e.target) {
-			mge.transpose = 0;
-			mge.hoveredElement = e.target;
-			mge.highlightElement();
-		}
-	},
+	// 	if (mge.hoveredElement != e.target) {
+	// 		mge.transpose = 0;
+	// 		mge.hoveredElement = e.target;
+	// 		mge.highlightElement();
+	// 	}
+	// },
 
-	isChildOfmgeWindow: function(elm) {
-		for (var i = 0; i < 8; i++) {
-			if (elm == mge.helpWindow) return true;
-			elm = elm.parentNode;
-			if (!elm) break;
-		}
+	// isChildOfmgeWindow: function(elm) {
+	// 	for (var i = 0; i < 8; i++) {
+	// 		if (elm == mge.helpWindow) return true;
+	// 		elm = elm.parentNode;
+	// 		if (!elm) break;
+	// 	}
 
-		return false;
-	},
+	// 	return false;
+	// },
 	
 	keyDown: function(e) {
 
@@ -158,11 +158,11 @@ const mge = {
 
 			mge.addHighlightStyle(mge.markedElement);
 
-			document.removeEventListener('mouseover', mge.mouseover, true);
+			// document.removeEventListener('mouseover', mge.mouseover, true);
 			document.removeEventListener('mousemove', mge.mousemove);
 			document.removeEventListener('mousedown', mge.select_Target, true);
-			document.removeEventListener('mouseup', mge.preventEvent, true);
-			document.removeEventListener('click', mge.preventEvent, true);
+			// document.removeEventListener('mouseup', mge.preventEvent, true);
+			// document.removeEventListener('click', mge.preventEvent, true);
 
 			mge.selectedElements.push({
 				RMB_TARGET,
@@ -259,13 +259,13 @@ const mge = {
 		return html.join(" > ");
 	},
 
-	preventEvent: function(e) {
-		if (mge.isChildOfmgeWindow(e.target)) return;
+	// preventEvent: function(e) {
+	// 	if (mge.isChildOfmgeWindow(e.target)) return;
 
-		// e.preventDefault();
-		// e.stopPropagation();
-		return false;
-	},
+	// 	// e.preventDefault();
+	// 	// e.stopPropagation();
+	// 	return false;
+	// },
 	
 	updateCSS: function() {
 		let cssLines = [
@@ -276,7 +276,7 @@ const mge = {
 				top: 50px;
 				right: 10px;
 				width: 460px;
-				height: 250px; 
+				height: 350px; 
 				padding: 10px 20px;
 				box-sizing: content-box;
 				background: #fff;
@@ -606,10 +606,11 @@ const mge = {
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			var path_html = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
+			var clicked = encodeURIComponent(mge.getPathHTML(mge.clickedElement));
+			var selected = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
-			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
-			// var line = "http://manga.garden/add_title?url=" + url + "&path_html=" + path_html;
+			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&clicked=" + clicked + "&selected=" + selected;
+			// var line = "http://manga.garden/add_title?url=" + url + "&clicked=" + clicked;
 			window.location = line;
 			// e.preventDefault();
 			// e.stopPropagation();
@@ -632,11 +633,11 @@ const mge = {
 		mge.updateElementList();
 		
 		mge.targetingMode = true;
-		document.addEventListener('mouseover', mge.mouseover, true);
+		// document.addEventListener('mouseover', mge.mouseover, true);
 		document.addEventListener('mousemove', mge.mousemove);
 		document.addEventListener('mousedown', mge.select_Target, true);
-		document.addEventListener('mouseup', mge.preventEvent, true);
-		document.addEventListener('click', mge.preventEvent, true);
+		// document.addEventListener('mouseup', mge.preventEvent, true);
+		// document.addEventListener('click', mge.preventEvent, true);
 		
 		// mge.addOverlays();
 		
@@ -669,11 +670,11 @@ const mge = {
 
 		mge.helpWindow.parentNode.removeChild(mge.helpWindow);
 		
-		document.removeEventListener('mouseover', mge.mouseover, true);
+		// document.removeEventListener('mouseover', mge.mouseover, true);
 		document.removeEventListener('mousemove', mge.mousemove);
 		document.removeEventListener('mousedown', mge.select_Target, true);
-		document.removeEventListener('mouseup', mge.preventEvent, true);
-		document.removeEventListener('click', mge.preventEvent, true);
+		// document.removeEventListener('mouseup', mge.preventEvent, true);
+		// document.removeEventListener('click', mge.preventEvent, true);
 		
 		// mge.removeOverlays();
 		
