@@ -1,12 +1,12 @@
 
 function setActive() {
 	chrome.browserAction.setIcon( { path: 'images/btn_16.png' } );
-	chrome.browserAction.setTitle( { title: 'Click to remove element [active]' });
+	chrome.browserAction.setTitle( { title: 'Click to select element' });
 }
 
 function setInactive() {
 	chrome.browserAction.setIcon( { path: 'images/btn_48.png' } );
-	chrome.browserAction.setTitle( { title: 'Click to remove element' });
+	chrome.browserAction.setTitle( { title: 'Click to select element' });
 }
 
 function checkActive() {
