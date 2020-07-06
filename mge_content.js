@@ -1,7 +1,6 @@
 var RMB_TARGET = null;
 
 document.addEventListener('contextmenu', function (event) {
-  // Save the element under the context menu in case 'remove' is clicked
   RMB_TARGET = event.target;
 });
 
