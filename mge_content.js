@@ -13,7 +13,7 @@ const mge = {
 	targetingMode: false,
 	transpose: 0, // how far to travel up the line of ancestors
 	maxZIndex: 2147483647,
-	hiddenElements: [],
+	selectedElements: [],
 	settings: {},
 	
 	helpWindow: false,
@@ -164,9 +164,9 @@ const mge = {
 			document.removeEventListener('mouseup', mge.preventEvent, true);
 			document.removeEventListener('click', mge.preventEvent, true);
 
-			mge.hiddenElements.push({
+			mge.selectedElements.push({
 				RMB_TARGET,
-				permanent: !!mge.settings.remember,
+				// permanent: !!mge.settings.remember,
 			});
 
 			mge.updateCSS();
@@ -179,8 +179,6 @@ const mge = {
 			return false;
 
 		}
-
-		// дальше не используется.
 
 
 
@@ -201,7 +199,7 @@ const mge = {
 		// document.removeEventListener('mouseup', mge.preventEvent, true);
 		// document.removeEventListener('click', mge.preventEvent, true);
 
-		// mge.hiddenElements.push({
+		// mge.selectedElements.push({
 		// 	selector,
 		// 	permanent: !!mge.settings.remember,
 		// });
@@ -411,8 +409,8 @@ const mge = {
 			`
 		];
 
-		for (let i in mge.hiddenElements) {
-			let selector = mge.hiddenElements[i].selector;
+		for (let i in mge.selectedElements) {
+			let selector = mge.selectedElements[i].selector;
 			if (selector == 'body' || selector == 'html') {
 
 				// отключает удаление элемента
@@ -448,7 +446,7 @@ const mge = {
 
 		let line = "";
 
-		if (mge.hiddenElements.length) {
+		if (mge.selectedElements.length) {
 
 			line = mge.getPathHTML(mge.selectedElement);
 
@@ -463,50 +461,50 @@ const mge = {
 		
 		elmList.innerHTML = line
 
-		function onChangePermanent () {
-			var tr = closest(this, 'tr');
-			let index = mge.hiddenElements.findIndex(elm => elm.selector == tr.selector);
-			var hiddenElement = mge.hiddenElements[index];
-			hiddenElement.permanent = this.checked;
+		// function onChangePermanent () {
+		// 	var tr = closest(this, 'tr');
+		// 	let index = mge.selectedElements.findIndex(elm => elm.selector == tr.selector);
+		// 	var hiddenElement = mge.selectedElements[index];
+		// 	hiddenElement.permanent = this.checked;
 
-		}
+		// }
 
-		function onDelete (e) {
-			let tr = closest(this, 'tr');
+		// function onDelete (e) {
+		// 	let tr = closest(this, 'tr');
 
-			if (tr.selector) {
-				let index = mge.hiddenElements.findIndex(elm => elm.selector == tr.selector);
-			    mge.hiddenElements.splice(index, 1);
-			}
+		// 	if (tr.selector) {
+		// 		let index = mge.selectedElements.findIndex(elm => elm.selector == tr.selector);
+		// 	    mge.selectedElements.splice(index, 1);
+		// 	}
 
-			mge.updateCSS();
-			mge.refreshOverlays();
-			mge.updateElementList();
-			// mge.updateSavedElements();
+		// 	mge.updateCSS();
+		// 	mge.refreshOverlays();
+		// 	mge.updateElementList();
+		// 	// mge.updateSavedElements();
 
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		// 	e.preventDefault();
+		// 	e.stopPropagation();
+		// }
 
-		function onEditSelector (e) {
-			e.preventDefault();
-			e.stopPropagation();
+		// function onEditSelector (e) {
+		// 	e.preventDefault();
+		// 	e.stopPropagation();
 
-			let tr = closest(this, 'tr');
+		// 	let tr = closest(this, 'tr');
 
-			if (tr.selector) {
-				let hiddenElement = mge.hiddenElements.find(elm => elm.selector == tr.selector);
-				let newSelector = prompt('Customize CSS selector\n\nhints:\n[id^="Abc"] matches #AbcWhatever\n[class*="Abc"] matches .somethingAbcSomething', hiddenElement.selector);
-				if (newSelector) {
-					hiddenElement.selector = newSelector;
+		// 	if (tr.selector) {
+		// 		let hiddenElement = mge.selectedElements.find(elm => elm.selector == tr.selector);
+		// 		let newSelector = prompt('Customize CSS selector\n\nhints:\n[id^="Abc"] matches #AbcWhatever\n[class*="Abc"] matches .somethingAbcSomething', hiddenElement.selector);
+		// 		if (newSelector) {
+		// 			hiddenElement.selector = newSelector;
 
-					mge.updateCSS();
-					mge.refreshOverlays();
-					mge.updateElementList();
-					// mge.updateSavedElements();
-				}
-			}
-		}
+		// 			mge.updateCSS();
+		// 			mge.refreshOverlays();
+		// 			mge.updateElementList();
+		// 			// mge.updateSavedElements();
+		// 		}
+		// 	}
+		// }
 
 		let i = -1;
 		for (let tr of document.querySelectorAll('#mge_selected_elm table tr')) {
@@ -515,11 +513,11 @@ const mge = {
 				continue;
 			}
 
-			tr.selector = mge.hiddenElements[i].selector;
+			tr.selector = mge.selectedElements[i].selector;
 
-			tr.querySelector('input').addEventListener('change', onChangePermanent, false);
-			tr.querySelector('a.ct_delete').addEventListener('click', onDelete, false);
-			tr.querySelector('a.ct_edit_selector').addEventListener('click', onEditSelector, false);
+			// tr.querySelector('input').addEventListener('change', onChangePermanent, false);
+			// tr.querySelector('a.ct_delete').addEventListener('click', onDelete, false);
+			// tr.querySelector('a.ct_edit_selector').addEventListener('click', onEditSelector, false);
 
 			i++;
 		}
@@ -531,7 +529,7 @@ const mge = {
 		// chrome.extension.sendMessage({
 		// 	action: 'set_saved_elms',
 		// 	website: location.hostname.replace(/^www\./, ''),
-		// 	data: JSON.stringify(mge.hiddenElements.filter(elm => elm.permanent)),
+		// 	data: JSON.stringify(mge.selectedElements.filter(elm => elm.permanent)),
 		// });
 	},
 
@@ -542,7 +540,7 @@ const mge = {
 		// 	action: 'get_saved_elms',
 		// 	website: location.hostname.replace(/^www\./, ''),
 		// }, function (data) {
-		// 	mge.hiddenElements = JSON.parse(data);
+		// 	mge.selectedElements = JSON.parse(data);
 
 		// 	mge.updateCSS();
 		// 	mge.updateElementList();
