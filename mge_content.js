@@ -214,16 +214,16 @@ const mge = {
 		// return false;
 	},
 
-	getSelector: function(element) {
-		if (element.tagName == 'BODY') return 'body';
-		if (element.tagName == 'HTML') return 'html';
-		if (!element) return null;
+	// getSelector: function(element) {
+	// 	if (element.tagName == 'BODY') return 'body';
+	// 	if (element.tagName == 'HTML') return 'html';
+	// 	if (!element) return null;
 
-		return cssFinder(element, {
-			seedMinLength: 3,
-			optimizedMinLength: 1,
-		});
-	},
+	// 	return cssFinder(element, {
+	// 		seedMinLength: 3,
+	// 		optimizedMinLength: 1,
+	// 	});
+	// },
 
 	getPathHTML: function (element, transpose) {
 		function getElmName (elm) {
@@ -525,35 +525,35 @@ const mge = {
 		}
 	},
 
-	updateSavedElements: function () {
-		// сохраняет удаленные элементы. если отключить, перезагрузка страници восстанавливает всё.
-		return;
-		// chrome.extension.sendMessage({
-		// 	action: 'set_saved_elms',
-		// 	website: location.hostname.replace(/^www\./, ''),
-		// 	data: JSON.stringify(mge.selectedElements.filter(elm => elm.permanent)),
-		// });
-	},
+	// updateSavedElements: function () {
+	// 	// сохраняет удаленные элементы. если отключить, перезагрузка страници восстанавливает всё.
+	// 	return;
+	// 	// chrome.extension.sendMessage({
+	// 	// 	action: 'set_saved_elms',
+	// 	// 	website: location.hostname.replace(/^www\./, ''),
+	// 	// 	data: JSON.stringify(mge.selectedElements.filter(elm => elm.permanent)),
+	// 	// });
+	// },
 
-	loadSavedElements: function () {
-		// эффект не заметен
-		return;
-		// chrome.extension.sendMessage({
-		// 	action: 'get_saved_elms',
-		// 	website: location.hostname.replace(/^www\./, ''),
-		// }, function (data) {
-		// 	mge.selectedElements = JSON.parse(data);
+	// loadSavedElements: function () {
+	// 	// эффект не заметен
+	// 	return;
+	// 	// chrome.extension.sendMessage({
+	// 	// 	action: 'get_saved_elms',
+	// 	// 	website: location.hostname.replace(/^www\./, ''),
+	// 	// }, function (data) {
+	// 	// 	mge.selectedElements = JSON.parse(data);
 
-		// 	mge.updateCSS();
-		// 	mge.updateElementList();
-		// });
+	// 	// 	mge.updateCSS();
+	// 	// 	mge.updateElementList();
+	// 	// });
 
-		// chrome.extension.sendMessage({
-		// 	action: 'get_settings',
-		// }, function (data) {
-		// 	mge.settings = JSON.parse(data);
-		// });
-	},
+	// 	// chrome.extension.sendMessage({
+	// 	// 	action: 'get_settings',
+	// 	// }, function (data) {
+	// 	// 	mge.settings = JSON.parse(data);
+	// 	// });
+	// },
 
 	// updateSettings: function() {
 	// 	// эффект не заметен
@@ -561,15 +561,15 @@ const mge = {
 	// 	document.querySelector('#mge_opt_remember').textContent = mge.settings.remember ? 'yes' : 'no';
 	// },
 
-	saveSettings: function() {
-		// эффект не заметен
-		// return;
+	// saveSettings: function() {
+	// 	// эффект не заметен
+	// 	// return;
 
-		chrome.extension.sendMessage({
-			action: 'set_settings',
-			data: JSON.stringify(mge.settings),
-		});
-	},
+	// 	chrome.extension.sendMessage({
+	// 		action: 'set_settings',
+	// 		data: JSON.stringify(mge.settings),
+	// 	});
+	// },
 	
 	activate: function() {
 		if (!mge.helpWindow) mge.updateCSS();
@@ -766,7 +766,7 @@ const mge = {
 
 		});
 
-		mge.loadSavedElements();
+		// mge.loadSavedElements();
 	}
 }
 
