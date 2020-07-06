@@ -184,36 +184,36 @@ const mge = {
 
 
 
-		if (mge.isChildOfmgeWindow(e.target)) return;
-		let selector = mge.getSelector(mge.markedElement);
+		// if (mge.isChildOfmgeWindow(e.target)) return;
+		// let selector = mge.getSelector(mge.markedElement);
 
-		if (!selector) return;
-		// присвоение 
+		// if (!selector) return;
+		// // присвоение 
 
 
-		if (!mge.clickedElement) {
-		mge.clickedElement = mge.markedElement;
-		mge.selectedElement = mge.markedElement;}
+		// if (!mge.clickedElement) {
+		// mge.clickedElement = mge.markedElement;
+		// mge.selectedElement = mge.markedElement;}
 
-		document.removeEventListener('mouseover', mge.mouseover, true);
-		document.removeEventListener('mousemove', mge.mousemove);
-		document.removeEventListener('mousedown', mge.select_Target, true);
-		document.removeEventListener('mouseup', mge.preventEvent, true);
-		document.removeEventListener('click', mge.preventEvent, true);
+		// document.removeEventListener('mouseover', mge.mouseover, true);
+		// document.removeEventListener('mousemove', mge.mousemove);
+		// document.removeEventListener('mousedown', mge.select_Target, true);
+		// document.removeEventListener('mouseup', mge.preventEvent, true);
+		// document.removeEventListener('click', mge.preventEvent, true);
 
-		mge.hiddenElements.push({
-			selector,
-			permanent: !!mge.settings.remember,
-		});
+		// mge.hiddenElements.push({
+		// 	selector,
+		// 	permanent: !!mge.settings.remember,
+		// });
 
-		mge.updateCSS();
-		mge.updateElementList();
-		mge.triggerResize();
-		mge.refreshOverlays();
+		// mge.updateCSS();
+		// mge.updateElementList();
+		// mge.triggerResize();
+		// mge.refreshOverlays();
 
-		e.preventDefault();
-		e.stopPropagation();
-		return false;
+		// e.preventDefault();
+		// e.stopPropagation();
+		// return false;
 	},
 
 	getSelector: function(element) {
@@ -528,31 +528,31 @@ const mge = {
 	updateSavedElements: function () {
 		// сохраняет удаленные элементы. если отключить, перезагрузка страници восстанавливает всё.
 		return;
-		chrome.extension.sendMessage({
-			action: 'set_saved_elms',
-			website: location.hostname.replace(/^www\./, ''),
-			data: JSON.stringify(mge.hiddenElements.filter(elm => elm.permanent)),
-		});
+		// chrome.extension.sendMessage({
+		// 	action: 'set_saved_elms',
+		// 	website: location.hostname.replace(/^www\./, ''),
+		// 	data: JSON.stringify(mge.hiddenElements.filter(elm => elm.permanent)),
+		// });
 	},
 
 	loadSavedElements: function () {
 		// эффект не заметен
-		// return;
-		chrome.extension.sendMessage({
-			action: 'get_saved_elms',
-			website: location.hostname.replace(/^www\./, ''),
-		}, function (data) {
-			mge.hiddenElements = JSON.parse(data);
+		return;
+		// chrome.extension.sendMessage({
+		// 	action: 'get_saved_elms',
+		// 	website: location.hostname.replace(/^www\./, ''),
+		// }, function (data) {
+		// 	mge.hiddenElements = JSON.parse(data);
 
-			mge.updateCSS();
-			mge.updateElementList();
-		});
+		// 	mge.updateCSS();
+		// 	mge.updateElementList();
+		// });
 
-		chrome.extension.sendMessage({
-			action: 'get_settings',
-		}, function (data) {
-			mge.settings = JSON.parse(data);
-		});
+		// chrome.extension.sendMessage({
+		// 	action: 'get_settings',
+		// }, function (data) {
+		// 	mge.settings = JSON.parse(data);
+		// });
 	},
 
 	// updateSettings: function() {
@@ -606,16 +606,13 @@ const mge = {
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			// e.preventDefault();
-			// e.stopPropagation();
-			// var path_html = encodeURIComponent(mge.getPathHTML(mge.markedElement));
 			var path_html = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
-			// var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
-			var line = "http://manga.garden/add_title?url=" + url + "&path_html=" + path_html;
-			// alert(line);
+			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&path_html=" + path_html;
+			// var line = "http://manga.garden/add_title?url=" + url + "&path_html=" + path_html;
 			window.location = line;
 			e.preventDefault();
+			e.stopPropagation();
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
