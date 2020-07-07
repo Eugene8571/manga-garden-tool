@@ -147,7 +147,7 @@ const mge = {
 			#mge_wnd {
 				display: none;
 				position: fixed;
-				bottom: 50%;
+				bottom: 35%;
 				right: 10px;
 				width: 460px;
 				max-height: 350px; 
@@ -369,7 +369,7 @@ const mge = {
 			var element = encodeURIComponent(mge.getPathHTML(mge.clickedElement));
 			var block = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
-			var line = "http://127.0.0.1:5002/add_title?url=\
+			var line = "http://manga.garden/add_title?url=\
 			" + url + "&clicked=" + element + "&selected=" + block;
 			window.location = line;
 		});
