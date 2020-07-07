@@ -8,11 +8,8 @@ const mge = {
 	markedElement: false,
 	clickedElement: false,
 	selectedElement: false,
-	targetingMode: false,
 	transpose: 0, // how far to travel up the line of ancestors
-	maxZIndex: 2147483647,
 	selectedElements: [],
-	settings: {},
 	
 	helpWindow: false,
 	
@@ -150,10 +147,10 @@ const mge = {
 			#mge_wnd {
 				display: none;
 				position: fixed;
-				top: 50px;
+				bottom: 50%;
 				right: 10px;
 				width: 460px;
-				height: 350px; 
+				max-height: 350px; 
 				padding: 10px 20px;
 				box-sizing: content-box;
 				background: #fff;
@@ -164,6 +161,7 @@ const mge = {
 				padding: 10px;
 				margin-top: 15px;
 				text-align: center;
+				z-index: 2147483647;
 
 			}
 			#mge_wnd * {
@@ -206,14 +204,15 @@ const mge = {
 				background: #f7f7f7; 
 				border: solid 12px #f7f7f7; 
 				border-width: 12px 0 12px 0; 
-				height: 84px; 
+				max-height: 84px; 
 				overflow: hidden;
 				color: black; 
 			}
 
-			.longer,
-			.shorter {
+			#mge_wnd > div > button.shorter,
+			#mge_wnd > div > button.longer {
 				margin: 5px;
+				color: black;
 			}
 			#mge_wnd.hasContent { display: inline-block; }
 
@@ -226,6 +225,7 @@ const mge = {
 				width: 100%;
 				text-align: center;
 				margin-top: 15px;
+				margin-bottom: 12px;
 			}
 
 
@@ -314,6 +314,9 @@ const mge = {
 		
 		elmList_selected.innerHTML = line;
 		document.querySelector('#mge_clicked_elm').innerHTML = mge.getPathHTML(mge.clickedElement);
+		
+		document.getElementById('mge_selected_elm').scrollTop = 9999999;
+		document.getElementById('mge_clicked_elm').scrollTop = 9999999;
 
 		let i = -1;
 		for (let tr of document.querySelectorAll('#mge_selected_elm table tr')) {
@@ -363,10 +366,11 @@ const mge = {
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			var clicked = encodeURIComponent(mge.getPathHTML(mge.clickedElement));
-			var selected = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
+			var element = encodeURIComponent(mge.getPathHTML(mge.clickedElement));
+			var block = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
-			var line = "http://127.0.0.1:5002/add_title?url=" + url + "&clicked=" + clicked + "&selected=" + selected;
+			var line = "http://127.0.0.1:5002/add_title?url=\
+			" + url + "&clicked=" + element + "&selected=" + block;
 			window.location = line;
 		});
 
@@ -385,13 +389,10 @@ const mge = {
 
 		mge.updateElementList();
 		
-		mge.targetingMode = true;
-		
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 	
 	deactivate: function() {
-		mge.targetingMode = false;
 		
 		if (mge.markedElement) {
 			mge.removeHighlightStyle(mge.markedElement);
@@ -426,9 +427,6 @@ const mge = {
 				mge.toggle();
 				responseFun(2.0);
 			}
-			else if (msg.action == "getStatus") {
-				responseFun(mge.targetingMode);
-			}
 
 			if (msg.action == "rmb_event") {
 				if (mge.clickedElement) {
@@ -440,11 +438,6 @@ const mge = {
 				responseFun(2.0);
 				mge.select_Target(RMB_TARGET)
 			}
-			else if (msg.action == "getStatus") {
-				responseFun(mge.targetingMode);
-			}
-
-
 
 		});
 	}
