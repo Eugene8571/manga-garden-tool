@@ -315,8 +315,8 @@ const mge = {
 		elmList_selected.innerHTML = line;
 		document.querySelector('#mge_clicked_elm').innerHTML = mge.getPathHTML(mge.clickedElement);
 		
-		document.getElementById('mge_selected_elm').scrollTop = 9999999;
-		document.getElementById('mge_clicked_elm').scrollTop = 9999999;
+		document.getElementById('mge_selected_elm').scrollTop = 9999;
+		document.getElementById('mge_clicked_elm').scrollTop = 9999;
 
 		let i = -1;
 		for (let tr of document.querySelectorAll('#mge_selected_elm table tr')) {
