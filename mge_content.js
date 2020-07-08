@@ -135,7 +135,7 @@ const mge = {
 
 		let html = [];
 		for (let i = 0; i < path.length; i++) {
-			html.push(`${path.length - 1 - i == transpose ? " active" : ""}${getElmName(path[i])}`);
+			html.push(`${path.length - 1 - i == transpose ? "" : ""}${getElmName(path[i])}`);
 		}
 
 		return html.join(" > ");
