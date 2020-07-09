@@ -27,9 +27,9 @@ const mge = {
 		}
 
 		mge.markedElement = mge.clickedElement;
-		if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
-			mge.markedElement = mge.markedElement.relatedElement;
-		}
+		// if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
+		// 	mge.markedElement = mge.markedElement.relatedElement;
+		// }
 		let i = 0;
 		for (i = 0; i < mge.transpose; i++) {
 			if (mge.markedElement.parentNode != window.document) {
@@ -90,9 +90,9 @@ const mge = {
 			mge.clickedElement = RMB_TARGET;
 			mge.selectedElement = RMB_TARGET;
 
-			if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
-				mge.markedElement = mge.markedElement.relatedElement;
-			}
+			// if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
+			// 	mge.markedElement = mge.markedElement.relatedElement;
+			// }
 
 			mge.addHighlightStyle(mge.markedElement);
 
@@ -122,9 +122,9 @@ const mge = {
 		let path = [];
 		let currentElm = element;
 
-		if (currentElm.className == "mge_overlay") { // this is just a proxy for an iframe
-			currentElm = currentElm.relatedElement;
-		}
+		// if (currentElm.className == "mge_overlay") { // this is just a proxy for an iframe
+		// 	currentElm = currentElm.relatedElement;
+		// }
 
 		while (currentElm) {
 			path.push(currentElm);
