@@ -339,7 +339,7 @@ const mge = {
 		document.body.appendChild(div);
 
 		div.innerHTML = `
-			<span class="ct_logo">Place of Interest.</span>
+			<span class="ct_logo">MANGA.garden tool.</span>
 			<div id="mge_clicked_elm"></div>
 			<div id="mge_selected_elm"></div>
 
