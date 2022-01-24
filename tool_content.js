@@ -16,7 +16,6 @@ const tool = {
 	
 	triggerResize: function() {
 		let evt = document.createEvent('UIEvents');
-		evt.initUIEvent('resize', true, false,window,0);
 		window.dispatchEvent(evt);
 	},
 
@@ -28,9 +27,6 @@ const tool = {
 		}
 
 		tool.markedElement = tool.clickedElement;
-		// if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
-		// 	tool.markedElement = tool.markedElement.relatedElement;
-		// }
 		let i = 0;
 		for (i = 0; i < tool.transpose; i++) {
 			if (tool.markedElement.parentNode != window.document) {
@@ -91,10 +87,6 @@ const tool = {
 			tool.clickedElement = RMB_TARGET;
 			tool.selectedElement = RMB_TARGET;
 
-			// if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
-			// 	tool.markedElement = tool.markedElement.relatedElement;
-			// }
-
 			tool.addHighlightStyle(tool.markedElement);
 
 			tool.selectedElements.push({
@@ -121,10 +113,6 @@ const tool = {
 
 		let path = [];
 		let currentElm = element;
-
-		// if (currentElm.className == "tool_overlay") { // this is just a proxy for an iframe
-		// 	currentElm = currentElm.relatedElement;
-		// }
 
 		while (currentElm) {
 			path.push(currentElm);
