@@ -182,61 +182,48 @@ const tool = {
 	},
 	
 	activate: function() {
-		let div = document.createElement('div');
-		div.setAttribute("id", "tool_wnd");
-		document.body.appendChild(div);
+        fetch(chrome.runtime.getURL('/tool_wnd/tool.html')).then(r => r.text()).then(html => {
+            document.body.insertAdjacentHTML('afterend', html);
+            // not using innerHTML as it would break js event listeners of the page
+            let div = document.getElementById("tool_wnd");
+            // tool.makeDraggable(div);
 
-		div.innerHTML = `
-			<span class="ct_logo">MANGA.garden tool.</span>
-			<div id="tool_clicked_elm"></div>
-			<div id="tool_selected_elm"></div>
+            // tool.addEventListeners()
 
-			<div>
-				<button class="shorter">< Q</button>
-				<button class="longer">W ></button>
-			</div>
+			div.querySelector('.longer').addEventListener('click', function (e) {
+				if (tool.transpose > 0) tool.transpose--;
+				tool.highlightSelected();
+			});
+			div.querySelector('.shorter').addEventListener('click', function (e) {
+				tool.transpose++;
+				tool.highlightSelected();
+			});
 
-			<div id="ct_btns">
-				<div class="send_selected"><button>✔️</button></div>
-				<div class="ct_btns_space"></div>
-				<div class="ct_close"><button>✖️</button></div>
-			</div>
+			div.querySelector('.send_selected').addEventListener('click', function (e) {
+				var element = encodeURIComponent(tool.getPathHTML(tool.clickedElement));
+				var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
+				var url = encodeURIComponent(document.location.href);
+				var line = MANGA_TRACKER_URL + "?url=" + url + "&element=" + element + "&block=" + block;
+				window.location = line;
+			});
 
-		`;
-
-		div.querySelector('.longer').addEventListener('click', function (e) {
-			if (tool.transpose > 0) tool.transpose--;
-			tool.highlightSelected();
-		});
-		div.querySelector('.shorter').addEventListener('click', function (e) {
-			tool.transpose++;
-			tool.highlightSelected();
-		});
-
-		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			var element = encodeURIComponent(tool.getPathHTML(tool.clickedElement));
-			var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
-			var url = encodeURIComponent(document.location.href);
-			var line = MANGA_TRACKER_URL + "?url=" + url + "&element=" + element + "&block=" + block;
-			window.location = line;
-		});
-
-		div.querySelector('.ct_close').addEventListener('click', function (e) {
-			tool.deactivate();
-		});
-
-		for (let elm of div.querySelectorAll('.ct_more a')) {
-			elm.addEventListener('click', function (e) {
-
+			div.querySelector('.ct_close').addEventListener('click', function (e) {
 				tool.deactivate();
 			});
-		}
-		
-		tool.helpWindow = div;
 
-		tool.updateElementList();
-		
-		chrome.extension.sendMessage({action: 'status', active: true});
+			for (let elm of div.querySelectorAll('.ct_more a')) {
+				elm.addEventListener('click', function (e) {
+
+					tool.deactivate();
+				});
+			}
+			
+			tool.helpWindow = div;
+
+			tool.updateElementList();
+			
+			chrome.extension.sendMessage({action: 'status', active: true});
+		});
 	},
 	
 	deactivate: function() {

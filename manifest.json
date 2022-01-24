@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_extensionName__",
-	"version": "0.0.0.5",
+	"version": "0.0.2.1",
 	"manifest_version": 2,
 	"default_locale":"ru", 
 	"description": "__MSG_extensionDescription__",
@@ -32,5 +32,9 @@
 	    "contextMenus",
 	    "http://*/*", 
 		"https://*/*"
+	],
+	
+	"web_accessible_resources": [ 
+		"tool_wnd/tool.html"
 	]
 }
