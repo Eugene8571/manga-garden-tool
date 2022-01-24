@@ -1,4 +1,5 @@
 var RMB_TARGET = null;
+var MANGA_TRACKER_URL = "http://localhost:8000/add_page";
 
 document.addEventListener('contextmenu', function (event) {
   RMB_TARGET = event.target;
@@ -369,8 +370,7 @@ const mge = {
 			var element = encodeURIComponent(mge.getPathHTML(mge.clickedElement));
 			var block = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
 			var url = encodeURIComponent(document.location.href);
-			var line = "http://127.0.0.1:5002//add_title?url=" + url + "&element=" + element + "&block=" + block;
-			// var line = "http://manga.garden/add_title?url=" + url + "&element=" + element + "&block=" + block;
+			var line = MANGA_TRACKER_URL + "?url=" + url + "&element=" + element + "&block=" + block;
 			window.location = line;
 		});
 
