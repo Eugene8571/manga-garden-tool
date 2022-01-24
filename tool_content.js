@@ -186,9 +186,6 @@ const tool = {
             document.body.insertAdjacentHTML('afterend', html);
             // not using innerHTML as it would break js event listeners of the page
             let div = document.getElementById("tool_wnd");
-            // tool.makeDraggable(div);
-
-            // tool.addEventListeners()
 
 			div.querySelector('.longer').addEventListener('click', function (e) {
 				if (tool.transpose > 0) tool.transpose--;
