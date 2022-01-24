@@ -22,6 +22,7 @@
 	"content_scripts": [ {
 		"all_frames": false,
 		"js": [ "tool_content.js" ],
+		"css": [ "tool_wnd/tool.css" ],
 		"matches": [ 
 			"http://*/*", 
 			"https://*/*" ],

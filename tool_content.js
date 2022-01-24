@@ -101,7 +101,6 @@ const tool = {
 				RMB_TARGET,
 			});
 
-			tool.updateCSS();
 			tool.updateElementList();
 			tool.triggerResize();
 			return false;
@@ -140,156 +139,6 @@ const tool = {
 		}
 
 		return html.join(" > ");
-	},
-	
-	updateCSS: function() {
-		let cssLines = [
-			`
-			#tool_wnd {
-				display: none;
-				position: fixed;
-				bottom: 35%;
-				right: 10px;
-				width: 460px;
-				max-height: 350px; 
-				padding: 10px 20px;
-				box-sizing: content-box;
-				background: #fff;
-				margin: 15px;
-				box-shadow: 
-				0 7px 14px rgba(0,0,0,0.25), 
-				0 5px 5px rgba(0,0,0,0.22);  
-				padding: 10px;
-				margin-top: 15px;
-				text-align: center;
-				z-index: 2147483647;
-
-			}
-			#tool_wnd * {
-				line-height: 1.3; font-size: inherit; color: inherit;
-				font-weight: normal; font-style: normal; font-family: inherit;
-				cursor: default;
-			}
-
-
-				display: inline-block; cursor: pointer;
-				transform: rotate(45deg); transition: transform 0.5s;
-			}
-			#tool_wnd .key {
-				display: inline-block;
-				font-family: monospace;
-				background: #f7f7f7; color: #999;
-				padding: 0 2px; margin: 0 2px;
-				border: solid 1px #d5d5d5; border-radius: 3px;
-			}
-			#tool_wnd .ct_logo { 
-				font-size: 18px; 
-			}
-			#tool_wnd .ct_logo.small { display: none; }
-			#tool_wnd .ct_logo svg {
-				fill: #666; vertical-align: -15%;
-				transform: rotate(-240deg); transition: transform 1s;
-			}
-			#tool_wnd .ct_logo.anim svg { transform: rotate(0deg); }
-
-			#tool_current_elm {
-				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
-				height: 84px; overflow: hidden;
-			}
-			#tool_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
-			#tool_current_elm .pathNode.active { border-bottom: solid 2px #555; }
-
-			#tool_clicked_elm,
-			#tool_selected_elm { 
-				margin-top: 5px; 
-				background: #f7f7f7; 
-				border: solid 12px #f7f7f7; 
-				border-width: 12px 0 12px 0; 
-				max-height: 84px; 
-				overflow: hidden;
-				color: black; 
-			}
-
-			#tool_wnd > div > button.shorter,
-			#tool_wnd > div > button.longer {
-				margin: 5px;
-				color: black;
-			}
-			#tool_wnd.hasContent { display: inline-block; }
-
-			#tool_wnd.minimized { width: 147px; height: 12px; }
-			#tool_wnd.minimized > * { display: none; }
-			#tool_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
-
-
-			#ct_btns {
-				width: 100%;
-				text-align: center;
-				margin-top: 15px;
-				margin-bottom: 12px;
-			}
-
-
-
-
-
-			.send_selected,
-			.ct_btns_space,
-			#tool_wnd .ct_close {
-				display: inline-block;
-				vertical-align: middle;
-			}
-
-			.ct_btns_space {
-				width: 70px;
-			}
-
-
-			.send_selected > button,
-			#tool_wnd .ct_close > button {
-				text-align: center;
-				font-size: 21px;
-				width: 100px;
-				height: 41px;
-				border: 0;
-			}
-
-
-
-
-			.send_selected > button {
-				background-color: #3498DB;
-
-			}
-			#tool_wnd .ct_close > button {
-				background-color: #E67E22;
-			}
-
-
-
-
-			`
-		];
-
-		for (let i in tool.selectedElements) {
-			let selector = tool.selectedElements[i].selector;
-			if (selector == 'body' || selector == 'html') {
-			} else {
-			}
-		}
-
-		let styleElm = document.querySelector('#tool_styles');
-		if (!styleElm) {
-			styleElm = document.createElement('style');
-			styleElm.type = "text/css";
-			styleElm.id = "tool_styles";
-			document.head.appendChild(styleElm);
-		}
-
-		while (styleElm.firstChild) {
-		    styleElm.removeChild(styleElm.firstChild);
-		}
-		styleElm.appendChild(document.createTextNode(cssLines.join('\n')));
 	},
 
 	updateElementList: function() {
@@ -333,8 +182,6 @@ const tool = {
 	},
 	
 	activate: function() {
-		if (!tool.helpWindow) tool.updateCSS();
-
 		let div = document.createElement('div');
 		div.setAttribute("id", "tool_wnd");
 		document.body.appendChild(div);
