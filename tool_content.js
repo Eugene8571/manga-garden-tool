@@ -5,7 +5,7 @@ document.addEventListener('contextmenu', function (event) {
   RMB_TARGET = event.target;
 });
 
-const mge = {
+const tool = {
 	markedElement: false,
 	clickedElement: false,
 	selectedElement: false,
@@ -21,41 +21,41 @@ const mge = {
 	},
 
 	highlightSelected: function() {
-		if (!mge.clickedElement) return;
+		if (!tool.clickedElement) return;
 		
-		if (mge.markedElement && (mge.markedElement != mge.clickedElement)) {
-			mge.removeHighlightStyle(mge.markedElement);
+		if (tool.markedElement && (tool.markedElement != tool.clickedElement)) {
+			tool.removeHighlightStyle(tool.markedElement);
 		}
 
-		mge.markedElement = mge.clickedElement;
-		// if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
-		// 	mge.markedElement = mge.markedElement.relatedElement;
+		tool.markedElement = tool.clickedElement;
+		// if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
+		// 	tool.markedElement = tool.markedElement.relatedElement;
 		// }
 		let i = 0;
-		for (i = 0; i < mge.transpose; i++) {
-			if (mge.markedElement.parentNode != window.document) {
-				mge.markedElement = mge.markedElement.parentNode;
+		for (i = 0; i < tool.transpose; i++) {
+			if (tool.markedElement.parentNode != window.document) {
+				tool.markedElement = tool.markedElement.parentNode;
 			} else {
 				break;
 			}
 		}
 		
-		mge.transpose = i;
-		mge.selectedElement = mge.markedElement
-		mge.addHighlightStyle(mge.selectedElement);
+		tool.transpose = i;
+		tool.selectedElement = tool.markedElement
+		tool.addHighlightStyle(tool.selectedElement);
 
-		document.querySelector('#mge_selected_elm').innerHTML = mge.getPathHTML(mge.markedElement, mge.transpose);
-		document.querySelector('#mge_selected_elm').scrollTop = 9999;
+		document.querySelector('#tool_selected_elm').innerHTML = tool.getPathHTML(tool.markedElement, tool.transpose);
+		document.querySelector('#tool_selected_elm').scrollTop = 9999;
 	},
 
 
 	addHighlightStyle: function (elm) {
-		if (mge.selectedElement) {
-			mge.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
-			mge.selectedElement.style.outlineOffset = '-5px';			
+		if (tool.selectedElement) {
+			tool.selectedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+			tool.selectedElement.style.outlineOffset = '-5px';			
 			return;}
-		mge.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
-		mge.markedElement.style.outlineOffset = '-5px';
+		tool.markedElement.style.outline = 'solid 5px rgba(230,126,34,0.5)';
+		tool.markedElement.style.outlineOffset = '-5px';
 	},
 
 	removeHighlightStyle: function (elm) {
@@ -65,45 +65,45 @@ const mge = {
 	
 	keyDown: function(e) {
 
-		if (!mge.clickedElement) return;
+		if (!tool.clickedElement) return;
 		
 		if (e.keyCode == 27) {
-			mge.deactivate();
+			tool.deactivate();
 		}
 		
 		if (e.keyCode == 87) { // w
-			if (mge.transpose > 0) mge.transpose--;
-			mge.highlightSelected();
+			if (tool.transpose > 0) tool.transpose--;
+			tool.highlightSelected();
 		} else if (e.keyCode == 81) { // q
-			mge.transpose++;
-			mge.highlightSelected();
+			tool.transpose++;
+			tool.highlightSelected();
 		}
 		return false;
 	},
 	
 	keyUp: function(e) {
-		if (!mge.clickedElement) return;
+		if (!tool.clickedElement) return;
 		return false;
 	},
 	
 	select_Target: function(e) {
 		if (RMB_TARGET) {
-			mge.clickedElement = RMB_TARGET;
-			mge.selectedElement = RMB_TARGET;
+			tool.clickedElement = RMB_TARGET;
+			tool.selectedElement = RMB_TARGET;
 
-			// if (mge.markedElement.className == "mge_overlay") { // this is just a proxy for an iframe
-			// 	mge.markedElement = mge.markedElement.relatedElement;
+			// if (tool.markedElement.className == "tool_overlay") { // this is just a proxy for an iframe
+			// 	tool.markedElement = tool.markedElement.relatedElement;
 			// }
 
-			mge.addHighlightStyle(mge.markedElement);
+			tool.addHighlightStyle(tool.markedElement);
 
-			mge.selectedElements.push({
+			tool.selectedElements.push({
 				RMB_TARGET,
 			});
 
-			mge.updateCSS();
-			mge.updateElementList();
-			mge.triggerResize();
+			tool.updateCSS();
+			tool.updateElementList();
+			tool.triggerResize();
 			return false;
 
 		}
@@ -123,7 +123,7 @@ const mge = {
 		let path = [];
 		let currentElm = element;
 
-		// if (currentElm.className == "mge_overlay") { // this is just a proxy for an iframe
+		// if (currentElm.className == "tool_overlay") { // this is just a proxy for an iframe
 		// 	currentElm = currentElm.relatedElement;
 		// }
 
@@ -145,7 +145,7 @@ const mge = {
 	updateCSS: function() {
 		let cssLines = [
 			`
-			#mge_wnd {
+			#tool_wnd {
 				display: none;
 				position: fixed;
 				bottom: 35%;
@@ -165,7 +165,7 @@ const mge = {
 				z-index: 2147483647;
 
 			}
-			#mge_wnd * {
+			#tool_wnd * {
 				line-height: 1.3; font-size: inherit; color: inherit;
 				font-weight: normal; font-style: normal; font-family: inherit;
 				cursor: default;
@@ -175,32 +175,32 @@ const mge = {
 				display: inline-block; cursor: pointer;
 				transform: rotate(45deg); transition: transform 0.5s;
 			}
-			#mge_wnd .key {
+			#tool_wnd .key {
 				display: inline-block;
 				font-family: monospace;
 				background: #f7f7f7; color: #999;
 				padding: 0 2px; margin: 0 2px;
 				border: solid 1px #d5d5d5; border-radius: 3px;
 			}
-			#mge_wnd .ct_logo { 
+			#tool_wnd .ct_logo { 
 				font-size: 18px; 
 			}
-			#mge_wnd .ct_logo.small { display: none; }
-			#mge_wnd .ct_logo svg {
+			#tool_wnd .ct_logo.small { display: none; }
+			#tool_wnd .ct_logo svg {
 				fill: #666; vertical-align: -15%;
 				transform: rotate(-240deg); transition: transform 1s;
 			}
-			#mge_wnd .ct_logo.anim svg { transform: rotate(0deg); }
+			#tool_wnd .ct_logo.anim svg { transform: rotate(0deg); }
 
-			#mge_current_elm {
+			#tool_current_elm {
 				font-family: monospace; background: #f7f7f7; color: #d5d5d5; padding: 2px; margin: 10px 0;
 				height: 84px; overflow: hidden;
 			}
-			#mge_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
-			#mge_current_elm .pathNode.active { border-bottom: solid 2px #555; }
+			#tool_current_elm .pathNode { color: #999; border-bottom: solid 2px rgba(0,0,0,0); }
+			#tool_current_elm .pathNode.active { border-bottom: solid 2px #555; }
 
-			#mge_clicked_elm,
-			#mge_selected_elm { 
+			#tool_clicked_elm,
+			#tool_selected_elm { 
 				margin-top: 5px; 
 				background: #f7f7f7; 
 				border: solid 12px #f7f7f7; 
@@ -210,16 +210,16 @@ const mge = {
 				color: black; 
 			}
 
-			#mge_wnd > div > button.shorter,
-			#mge_wnd > div > button.longer {
+			#tool_wnd > div > button.shorter,
+			#tool_wnd > div > button.longer {
 				margin: 5px;
 				color: black;
 			}
-			#mge_wnd.hasContent { display: inline-block; }
+			#tool_wnd.hasContent { display: inline-block; }
 
-			#mge_wnd.minimized { width: 147px; height: 12px; }
-			#mge_wnd.minimized > * { display: none; }
-			#mge_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
+			#tool_wnd.minimized { width: 147px; height: 12px; }
+			#tool_wnd.minimized > * { display: none; }
+			#tool_wnd.minimized .ct_logo.small { display: block; margin: -4px 0 0 -10px; }
 
 
 			#ct_btns {
@@ -235,7 +235,7 @@ const mge = {
 
 			.send_selected,
 			.ct_btns_space,
-			#mge_wnd .ct_close {
+			#tool_wnd .ct_close {
 				display: inline-block;
 				vertical-align: middle;
 			}
@@ -246,7 +246,7 @@ const mge = {
 
 
 			.send_selected > button,
-			#mge_wnd .ct_close > button {
+			#tool_wnd .ct_close > button {
 				text-align: center;
 				font-size: 21px;
 				width: 100px;
@@ -261,7 +261,7 @@ const mge = {
 				background-color: #3498DB;
 
 			}
-			#mge_wnd .ct_close > button {
+			#tool_wnd .ct_close > button {
 				background-color: #E67E22;
 			}
 
@@ -271,18 +271,18 @@ const mge = {
 			`
 		];
 
-		for (let i in mge.selectedElements) {
-			let selector = mge.selectedElements[i].selector;
+		for (let i in tool.selectedElements) {
+			let selector = tool.selectedElements[i].selector;
 			if (selector == 'body' || selector == 'html') {
 			} else {
 			}
 		}
 
-		let styleElm = document.querySelector('#mge_styles');
+		let styleElm = document.querySelector('#tool_styles');
 		if (!styleElm) {
 			styleElm = document.createElement('style');
 			styleElm.type = "text/css";
-			styleElm.id = "mge_styles";
+			styleElm.id = "tool_styles";
 			document.head.appendChild(styleElm);
 		}
 
@@ -293,16 +293,16 @@ const mge = {
 	},
 
 	updateElementList: function() {
-		if (!mge.helpWindow) return;
+		if (!tool.helpWindow) return;
 
-		let elmList_selected = document.querySelector('#mge_selected_elm');
-		let wind = document.querySelector('#mge_wnd');
+		let elmList_selected = document.querySelector('#tool_selected_elm');
+		let wind = document.querySelector('#tool_wnd');
 
 		let line = "";
 
-		if (mge.selectedElements.length) {
+		if (tool.selectedElements.length) {
 
-			line = mge.getPathHTML(mge.selectedElement);
+			line = tool.getPathHTML(tool.selectedElement);
 
 
 			elmList_selected.classList.add('hasContent');
@@ -314,35 +314,35 @@ const mge = {
 		}
 		
 		elmList_selected.innerHTML = line;
-		document.querySelector('#mge_clicked_elm').innerHTML = mge.getPathHTML(mge.clickedElement);
+		document.querySelector('#tool_clicked_elm').innerHTML = tool.getPathHTML(tool.clickedElement);
 		
-		document.getElementById('mge_selected_elm').scrollTop = 9999;
-		document.getElementById('mge_clicked_elm').scrollTop = 9999;
+		document.getElementById('tool_selected_elm').scrollTop = 9999;
+		document.getElementById('tool_clicked_elm').scrollTop = 9999;
 
 		let i = -1;
-		for (let tr of document.querySelectorAll('#mge_selected_elm table tr')) {
+		for (let tr of document.querySelectorAll('#tool_selected_elm table tr')) {
 			if (i < 0) { // skip heading
 				i++;
 				continue;
 			}
 
-			tr.selector = mge.selectedElements[i].selector;
+			tr.selector = tool.selectedElements[i].selector;
 
 			i++;
 		}
 	},
 	
 	activate: function() {
-		if (!mge.helpWindow) mge.updateCSS();
+		if (!tool.helpWindow) tool.updateCSS();
 
 		let div = document.createElement('div');
-		div.setAttribute("id", "mge_wnd");
+		div.setAttribute("id", "tool_wnd");
 		document.body.appendChild(div);
 
 		div.innerHTML = `
 			<span class="ct_logo">MANGA.garden tool.</span>
-			<div id="mge_clicked_elm"></div>
-			<div id="mge_selected_elm"></div>
+			<div id="tool_clicked_elm"></div>
+			<div id="tool_selected_elm"></div>
 
 			<div>
 				<button class="shorter">< Q</button>
@@ -358,89 +358,89 @@ const mge = {
 		`;
 
 		div.querySelector('.longer').addEventListener('click', function (e) {
-			if (mge.transpose > 0) mge.transpose--;
-			mge.highlightSelected();
+			if (tool.transpose > 0) tool.transpose--;
+			tool.highlightSelected();
 		});
 		div.querySelector('.shorter').addEventListener('click', function (e) {
-			mge.transpose++;
-			mge.highlightSelected();
+			tool.transpose++;
+			tool.highlightSelected();
 		});
 
 		div.querySelector('.send_selected').addEventListener('click', function (e) {
-			var element = encodeURIComponent(mge.getPathHTML(mge.clickedElement));
-			var block = encodeURIComponent(mge.getPathHTML(mge.selectedElement));
+			var element = encodeURIComponent(tool.getPathHTML(tool.clickedElement));
+			var block = encodeURIComponent(tool.getPathHTML(tool.selectedElement));
 			var url = encodeURIComponent(document.location.href);
 			var line = MANGA_TRACKER_URL + "?url=" + url + "&element=" + element + "&block=" + block;
 			window.location = line;
 		});
 
 		div.querySelector('.ct_close').addEventListener('click', function (e) {
-			mge.deactivate();
+			tool.deactivate();
 		});
 
 		for (let elm of div.querySelectorAll('.ct_more a')) {
 			elm.addEventListener('click', function (e) {
 
-				mge.deactivate();
+				tool.deactivate();
 			});
 		}
 		
-		mge.helpWindow = div;
+		tool.helpWindow = div;
 
-		mge.updateElementList();
+		tool.updateElementList();
 		
 		chrome.extension.sendMessage({action: 'status', active: true});
 	},
 	
 	deactivate: function() {
 		
-		if (mge.markedElement) {
-			mge.removeHighlightStyle(mge.markedElement);
+		if (tool.markedElement) {
+			tool.removeHighlightStyle(tool.markedElement);
 		}
-		mge.markedElement = false;
+		tool.markedElement = false;
 
-		if (mge.selectedElement) {
-			mge.removeHighlightStyle(mge.selectedElement);
+		if (tool.selectedElement) {
+			tool.removeHighlightStyle(tool.selectedElement);
 		}
-		mge.selectedElement = false;
-		if (mge.clickedElement) {
-			mge.removeHighlightStyle(mge.clickedElement);
+		tool.selectedElement = false;
+		if (tool.clickedElement) {
+			tool.removeHighlightStyle(tool.clickedElement);
 		}
-		mge.clickedElement = false;
+		tool.clickedElement = false;
 
-		mge.helpWindow.parentNode.removeChild(mge.helpWindow);
+		tool.helpWindow.parentNode.removeChild(tool.helpWindow);
 		
 		chrome.extension.sendMessage({action: 'status', active: false});
 	},
 	
 	toggle: function() {
-		if (mge.clickedElement) mge.deactivate();
-		else mge.activate();
+		if (tool.clickedElement) tool.deactivate();
+		else tool.activate();
 	},
 	
 	init: function() {
-		document.addEventListener('keydown', mge.keyDown);
-		document.addEventListener('keyup', mge.keyUp);
+		document.addEventListener('keydown', tool.keyDown);
+		document.addEventListener('keyup', tool.keyUp);
 		
 		chrome.extension.onMessage.addListener(function(msg, sender, responseFun) {
 			if (msg.action == "toggle") {
-				mge.toggle();
+				tool.toggle();
 				responseFun(2.0);
 			}
 
 			if (msg.action == "rmb_event") {
-				if (mge.clickedElement) {
-					mge.deactivate();
-					mge.activate(); 
+				if (tool.clickedElement) {
+					tool.deactivate();
+					tool.activate(); 
 				} else {
-					mge.activate(); 
+					tool.activate(); 
 				}
 				responseFun(2.0);
-				mge.select_Target(RMB_TARGET)
+				tool.select_Target(RMB_TARGET)
 			}
 
 		});
 	}
 }
 
-mge.init();
+tool.init();
